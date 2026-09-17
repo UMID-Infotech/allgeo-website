@@ -19,40 +19,31 @@ function AcrossIndia() {
 
   const imageUrl = `${import.meta.env.VITE_IMAGEKIT_URL_ENDPOINT}${presenceData.image.src}`;
 
-  useEffect(() => {
-    const section = sectionRef.current;
+useEffect(() => {
+  const section = sectionRef.current;
 
-    if (!section) {
-      return undefined;
-    }
+  if (!section) {
+    return undefined;
+  }
 
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      if (entry.isIntersecting) {
+        setIsVisible(true);
+        observer.disconnect();
+      }
+    },
+    {
+      threshold: 0.16,
+    },
+  );
 
-    if (prefersReducedMotion) {
-      setIsVisible(true);
-      return undefined;
-    }
+  observer.observe(section);
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
-      },
-      {
-        threshold: 0.16,
-      },
-    );
-
-    observer.observe(section);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
+  return () => {
+    observer.disconnect();
+  };
+}, []);
 
   const revealBase =
     "transition-[opacity,transform] duration-700 ease-out motion-reduce:translate-x-0 motion-reduce:translate-y-0 motion-reduce:scale-100 motion-reduce:opacity-100 motion-reduce:transition-none";

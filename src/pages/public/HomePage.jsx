@@ -4,6 +4,10 @@ import TemTechno from "../../components/home/temtechno";
 import IndustriesSection from "../../components/home/IndustriesSection";
 import ServicesSection from "../../components/home/ServicesSection";
 import AcrossIndia from "../../components/home/across-india";
+import ProductsSection from "../../components/home/ProductsSection";
+import WhyAllGeoSection from "../../components/home/WhyAllGeoSection";
+import CTASection from "../../components/home/CTASection";
+import Footer from "../../components/layout/Footer";
 
 function HomePage() {
   return (
@@ -16,6 +20,10 @@ function HomePage() {
         <IndustriesSection />
         <ServicesSection />
         <AcrossIndia />
+        <ProductsSection />
+        <WhyAllGeoSection />
+        <CTASection />
+        <Footer />
       </main>
     </>
   );
