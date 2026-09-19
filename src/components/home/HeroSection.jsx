@@ -1,8 +1,7 @@
 import { Image } from "@imagekit/react";
 import { ArrowRight } from "lucide-react";
 
-const HERO_IMAGE_PATH =
-  "/allgeo-solutions/home/hero-geological-cutaway.png";
+const HERO_IMAGE_PATH = "/allgeo-solutions/home/hero-geological-cutaway.png";
 
 const geologicalCallouts = [
   {
@@ -33,8 +32,7 @@ const geologicalCallouts = [
 ];
 
 function HeroSection() {
-  const imageKitEndpoint =
-    import.meta.env.VITE_IMAGEKIT_URL_ENDPOINT;
+  const imageKitEndpoint = import.meta.env.VITE_IMAGEKIT_URL_ENDPOINT;
 
   return (
     <section
@@ -45,10 +43,7 @@ function HeroSection() {
           DECORATIVE SCIENTIFIC BACKGROUND
       ===================================================== */}
 
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0"
-      >
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
         {/* Soft white center area */}
 
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_42%_48%,rgba(255,255,255,0.96)_0%,rgba(255,255,255,0.72)_35%,rgba(241,247,251,0.42)_72%,rgba(241,247,251,0.75)_100%)]" />
@@ -65,10 +60,7 @@ function HeroSection() {
           xmlns="http://www.w3.org/2000/svg"
           className="absolute -left-32 top-0 h-[620px] w-[620px] opacity-[0.16]"
         >
-          <g
-            stroke="var(--color-navy-light)"
-            strokeWidth="1"
-          >
+          <g stroke="var(--color-navy-light)" strokeWidth="1">
             <path d="M75 255C109 165 203 94 307 105C409 116 502 198 518 294C536 401 468 497 367 526C269 554 162 518 105 437C67 383 52 319 75 255Z" />
             <path d="M108 264C137 190 214 132 299 140C386 149 465 215 480 296C496 386 438 463 354 488C271 512 184 482 136 416C103 370 88 316 108 264Z" />
             <path d="M143 273C167 215 227 170 295 176C365 182 427 234 441 299C454 369 408 430 340 450C274 470 205 445 167 393C141 357 128 314 143 273Z" />
@@ -84,10 +76,7 @@ function HeroSection() {
           xmlns="http://www.w3.org/2000/svg"
           className="absolute -right-24 -top-20 h-[520px] w-[520px] opacity-[0.13]"
         >
-          <g
-            stroke="var(--color-green)"
-            strokeWidth="1"
-          >
+          <g stroke="var(--color-green)" strokeWidth="1">
             <path d="M42 210C71 110 174 39 280 58C385 77 462 170 452 274C443 378 350 459 244 454C137 449 48 364 37 262C35 244 36 227 42 210Z" />
             <path d="M80 217C104 137 185 82 268 96C351 110 414 184 407 266C400 349 327 412 244 408C160 404 91 338 82 258C80 244 79 230 80 217Z" />
             <path d="M119 222C138 164 197 124 258 134C319 144 366 199 361 260C356 322 302 369 241 366C179 363 128 314 121 255C119 244 118 233 119 222Z" />
@@ -127,18 +116,16 @@ function HeroSection() {
               className="animate-fade-up mt-5 max-w-[570px] text-[clamp(2.35rem,4.15vw,4.35rem)] font-bold leading-[1.04] tracking-[-0.035em] text-[var(--color-navy)]"
               style={{ animationDelay: "170ms" }}
             >
-              Advanced Geoscience Solutions for Smarter Subsurface
-              Decisions.
+              Advanced Geoscience Solutions for Smarter Subsurface Decisions.
             </h1>
 
             <p
               className="animate-fade-up mt-6 max-w-[560px] text-[15px] leading-7 text-[var(--color-text-muted)] sm:text-base sm:leading-7"
               style={{ animationDelay: "270ms" }}
             >
-              Integrated geology, geophysics and hydrogeology
-              expertise for reliable subsurface investigation,
-              groundwater assessment and data-driven project
-              decisions.
+              Integrated geology, geophysics and hydrogeology expertise for
+              reliable subsurface investigation, groundwater assessment and
+              data-driven project decisions.
             </p>
 
             {/* CTAs */}
@@ -149,7 +136,8 @@ function HeroSection() {
             >
               <a
                 href="#services"
-                className="group inline-flex min-h-12 items-center justify-center gap-2 rounded-[6px] bg-[var(--color-navy)] px-6 text-sm font-semibold !text-white shadow-[0_8px_22px_rgba(8,45,87,0.14)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[var(--color-navy-dark)]"              >
+                className="group inline-flex min-h-12 items-center justify-center gap-2 rounded-[6px] bg-[var(--color-navy)] px-6 text-sm font-semibold !text-white shadow-[0_8px_22px_rgba(8,45,87,0.14)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[var(--color-navy-dark)]"
+              >
                 <span>Explore Services</span>
 
                 <ArrowRight

@@ -55,9 +55,7 @@ function ServicesSection() {
         {/* Section heading */}
         <div
           className={`grid gap-5 transition-all duration-700 ease-out motion-reduce:transform-none motion-reduce:opacity-100 motion-reduce:transition-none lg:grid-cols-[1fr_340px] lg:items-end ${
-            isVisible
-              ? "translate-y-0 opacity-100"
-              : "translate-y-5 opacity-0"
+            isVisible ? "translate-y-0 opacity-100" : "translate-y-5 opacity-0"
           }`}
         >
           <div>

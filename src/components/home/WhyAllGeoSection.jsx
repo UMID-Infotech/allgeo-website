@@ -1,10 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import {
-  ChartNoAxesCombined,
-  Cpu,
-  MapPinned,
-  Workflow,
-} from "lucide-react";
+import { ChartNoAxesCombined, Cpu, MapPinned, Workflow } from "lucide-react";
 
 function WhyAllGeoSection() {
   const sectionRef = useRef(null);
@@ -88,9 +83,7 @@ function WhyAllGeoSection() {
         {/* Section heading */}
         <div
           className={`grid gap-6 transition-all duration-700 ease-out motion-reduce:transform-none motion-reduce:opacity-100 motion-reduce:transition-none lg:grid-cols-[1fr_380px] lg:items-end ${
-            isVisible
-              ? "translate-y-0 opacity-100"
-              : "translate-y-5 opacity-0"
+            isVisible ? "translate-y-0 opacity-100" : "translate-y-5 opacity-0"
           }`}
         >
           <div>
@@ -126,19 +119,13 @@ function WhyAllGeoSection() {
                   index !== 0
                     ? "border-t border-white/10 sm:border-t-0 sm:border-l"
                     : ""
-                } ${
-                  index === 2
-                    ? "sm:border-l-0 lg:border-l"
-                    : ""
-                } ${
+                } ${index === 2 ? "sm:border-l-0 lg:border-l" : ""} ${
                   isVisible
                     ? "translate-y-0 opacity-100"
                     : "translate-y-6 opacity-0"
                 }`}
                 style={{
-                  transitionDelay: isVisible
-                    ? `${120 + index * 90}ms`
-                    : "0ms",
+                  transitionDelay: isVisible ? `${120 + index * 90}ms` : "0ms",
                 }}
               >
                 <div className="flex items-center justify-between">

@@ -1,11 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import {
-  Building2,
-  Droplets,
-  HardHat,
-  Mountain,
-  Leaf,
-} from "lucide-react";
+import { Building2, Droplets, HardHat, Mountain, Leaf } from "lucide-react";
 
 const industries = [
   {
@@ -40,64 +34,64 @@ function IndustriesSection() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-  const section = sectionRef.current;
+    const section = sectionRef.current;
 
-  if (!section) {
-    return undefined;
-  }
+    if (!section) {
+      return undefined;
+    }
 
-  const observer = new IntersectionObserver(
-    ([entry]) => {
-      if (entry.isIntersecting) {
-        setIsVisible(true);
-        observer.disconnect();
-      }
-    },
-    {
-      threshold: 0.18,
-    },
-  );
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      {
+        threshold: 0.18,
+      },
+    );
 
-  observer.observe(section);
+    observer.observe(section);
 
-  return () => {
-    observer.disconnect();
-  };
-}, []);
-//   useEffect(() => {
-//     const section = sectionRef.current;
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+  //   useEffect(() => {
+  //     const section = sectionRef.current;
 
-//     if (!section) {
-//       return undefined;
-//     }
+  //     if (!section) {
+  //       return undefined;
+  //     }
 
-//     const prefersReducedMotion = window.matchMedia(
-//       "(prefers-reduced-motion: reduce)",
-//     ).matches;
+  //     const prefersReducedMotion = window.matchMedia(
+  //       "(prefers-reduced-motion: reduce)",
+  //     ).matches;
 
-//     if (prefersReducedMotion) {
-//       setIsVisible(true);
-//       return undefined;
-//     }
+  //     if (prefersReducedMotion) {
+  //       setIsVisible(true);
+  //       return undefined;
+  //     }
 
-//     const observer = new IntersectionObserver(
-//       ([entry]) => {
-//         if (entry.isIntersecting) {
-//           setIsVisible(true);
-//           observer.disconnect();
-//         }
-//       },
-//       {
-//         threshold: 0.18,
-//       },
-//     );
+  //     const observer = new IntersectionObserver(
+  //       ([entry]) => {
+  //         if (entry.isIntersecting) {
+  //           setIsVisible(true);
+  //           observer.disconnect();
+  //         }
+  //       },
+  //       {
+  //         threshold: 0.18,
+  //       },
+  //     );
 
-//     observer.observe(section);
+  //     observer.observe(section);
 
-//     return () => {
-//       observer.disconnect();
-//     };
-//   }, []);
+  //     return () => {
+  //       observer.disconnect();
+  //     };
+  //   }, []);
 
   return (
     <section
@@ -118,13 +112,11 @@ function IndustriesSection() {
 
       <div className="site-container section-spacing relative z-10">
         {/* Section heading */}
-<div
-  className={`transition-all duration-700 ease-out motion-reduce:transform-none motion-reduce:opacity-100 motion-reduce:transition-none ${
-    isVisible
-      ? "translate-y-0 opacity-100"
-      : "translate-y-5 opacity-0"
-  }`}
->
+        <div
+          className={`transition-all duration-700 ease-out motion-reduce:transform-none motion-reduce:opacity-100 motion-reduce:transition-none ${
+            isVisible ? "translate-y-0 opacity-100" : "translate-y-5 opacity-0"
+          }`}
+        >
           <p className="section-eyebrow">Industries We Serve</p>
 
           <h2
@@ -145,9 +137,7 @@ function IndustriesSection() {
               <article
                 key={industry.title}
                 className={`group relative flex min-h-48 flex-col items-center justify-center overflow-hidden rounded-xl border border-[var(--color-border)] bg-white/90 px-5 py-7 text-center shadow-[0_8px_30px_rgba(8,45,87,0.04)] transition-all duration-500 ease-out hover:-translate-y-1 hover:border-[var(--color-navy-light)]/30 hover:shadow-[0_14px_35px_rgba(8,45,87,0.09)] md:col-span-2 lg:col-span-1 ${
-                  index === 3
-                    ? "md:col-start-2 lg:col-start-auto"
-                    : ""
+                  index === 3 ? "md:col-start-2 lg:col-start-auto" : ""
                 } ${
                   isVisible
                     ? "translate-y-0 opacity-100"

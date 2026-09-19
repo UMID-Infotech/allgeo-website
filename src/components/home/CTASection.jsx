@@ -1,11 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import {
-  Globe2,
-  Mail,
-  MapPin,
-  Phone,
-  ShieldCheck,
-} from "lucide-react";
+import { Globe2, Mail, MapPin, Phone, ShieldCheck } from "lucide-react";
 import { submitEnquiry } from "../../services/enquiryService";
 function CTASection() {
   const sectionRef = useRef(null);
@@ -53,63 +47,62 @@ function CTASection() {
     };
   }, []);
 
-function handleChange(event) {
-  const { name, value } = event.target;
+  function handleChange(event) {
+    const { name, value } = event.target;
 
-  setFormData((currentData) => ({
-    ...currentData,
-    [name]: value,
-  }));
+    setFormData((currentData) => ({
+      ...currentData,
+      [name]: value,
+    }));
 
-  if (submitStatus.message) {
+    if (submitStatus.message) {
+      setSubmitStatus({
+        type: "",
+        message: "",
+      });
+    }
+  }
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+
+    if (isSubmitting) {
+      return;
+    }
+
+    setIsSubmitting(true);
+
     setSubmitStatus({
       type: "",
       message: "",
     });
+
+    try {
+      const response = await submitEnquiry(formData);
+
+      setSubmitStatus({
+        type: "success",
+        message:
+          response.message ||
+          "Thank you. Your enquiry has been submitted successfully.",
+      });
+
+      setFormData({
+        name: "",
+        email: "",
+        contactNumber: "",
+        message: "",
+      });
+    } catch (error) {
+      setSubmitStatus({
+        type: "error",
+        message:
+          error.message || "Unable to submit your enquiry. Please try again.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   }
-}
-
-async function handleSubmit(event) {
-  event.preventDefault();
-
-  if (isSubmitting) {
-    return;
-  }
-
-  setIsSubmitting(true);
-
-  setSubmitStatus({
-    type: "",
-    message: "",
-  });
-
-  try {
-    const response = await submitEnquiry(formData);
-
-    setSubmitStatus({
-      type: "success",
-      message:
-        response.message ||
-        "Thank you. Your enquiry has been submitted successfully.",
-    });
-
-    setFormData({
-      name: "",
-      email: "",
-      contactNumber: "",
-      message: "",
-    });
-  } catch (error) {
-    setSubmitStatus({
-      type: "error",
-      message:
-        error.message ||
-        "Unable to submit your enquiry. Please try again.",
-    });
-  } finally {
-    setIsSubmitting(false);
-  }
-}
   return (
     <section
       ref={sectionRef}
@@ -145,7 +138,6 @@ async function handleSubmit(event) {
               className="mt-2 max-w-xl text-3xl font-bold tracking-tight text-[var(--color-navy)] sm:text-4xl lg:text-[2.65rem]"
             >
               Have a project in mind?
-
               <span className="mt-1 block">
                 Let&apos;s discuss{" "}
                 <span className="text-[var(--color-green)]">
@@ -379,30 +371,30 @@ async function handleSubmit(event) {
                 </div>
 
                 {/* Submit button */}
-<button
-  type="submit"
-  disabled={isSubmitting}
-  className="flex w-full items-center justify-center rounded-xl bg-[var(--color-green)] px-6 py-2.5 text-base font-bold text-white shadow-[0_10px_25px_rgba(22,163,74,0.22)] transition-all duration-300 hover:bg-[var(--color-green-dark)] hover:shadow-[0_14px_30px_rgba(22,163,74,0.28)] focus-visible:ring-2 focus-visible:ring-[var(--color-green)] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
->
-  {isSubmitting ? "Sending Enquiry..." : "Submit Enquiry"}
-</button>
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="flex w-full items-center justify-center rounded-xl bg-[var(--color-green)] px-6 py-2.5 text-base font-bold text-white shadow-[0_10px_25px_rgba(22,163,74,0.22)] transition-all duration-300 hover:bg-[var(--color-green-dark)] hover:shadow-[0_14px_30px_rgba(22,163,74,0.28)] focus-visible:ring-2 focus-visible:ring-[var(--color-green)] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {isSubmitting ? "Sending Enquiry..." : "Submit Enquiry"}
+                </button>
 
-{submitStatus.message && (
-  <div
-    role="status"
-    aria-live="polite"
-    className={`rounded-lg border px-4 py-3 text-sm font-medium ${
-      submitStatus.type === "success"
-        ? "border-green-200 bg-green-50 text-green-700"
-        : "border-red-200 bg-red-50 text-red-700"
-    }`}
-  >
-    {submitStatus.message}
-  </div>
-)}
+                {submitStatus.message && (
+                  <div
+                    role="status"
+                    aria-live="polite"
+                    className={`rounded-lg border px-4 py-3 text-sm font-medium ${
+                      submitStatus.type === "success"
+                        ? "border-green-200 bg-green-50 text-green-700"
+                        : "border-red-200 bg-red-50 text-red-700"
+                    }`}
+                  >
+                    {submitStatus.message}
+                  </div>
+                )}
 
-{/* Supporting note */}
-<div className="flex items-center justify-center gap-2 pt-1 text-center text-xs leading-5 text-[var(--color-text-muted)] sm:text-sm">
+                {/* Supporting note */}
+                <div className="flex items-center justify-center gap-2 pt-1 text-center text-xs leading-5 text-[var(--color-text-muted)] sm:text-sm">
                   <ShieldCheck
                     aria-hidden="true"
                     className="h-4 w-4 shrink-0 text-[var(--color-green)]"

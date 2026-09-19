@@ -1,10 +1,4 @@
-import {
-  ArrowUpRight,
-  Globe2,
-  Mail,
-  MapPin,
-  Phone,
-} from "lucide-react";
+import { ArrowUpRight, Globe2, Mail, MapPin, Phone } from "lucide-react";
 
 import services from "../../data/services.js";
 import products from "../../data/products.js";
@@ -31,9 +25,9 @@ function FooterLink({ href, children }) {
 
 function Footer() {
   const currentYear = new Date().getFullYear();
-const imageKitEndpoint = import.meta.env.VITE_IMAGEKIT_URL_ENDPOINT;
+  const imageKitEndpoint = import.meta.env.VITE_IMAGEKIT_URL_ENDPOINT;
 
-const footerLogo = `${imageKitEndpoint}/allgeo-solutions/home/AGS-white-logo.png`;
+  const footerLogo = `${imageKitEndpoint}/allgeo-solutions/home/AGS-white-logo.png`;
   return (
     <footer className="relative min-h-screen overflow-hidden bg-[var(--color-navy)] text-white">
       {/* Scientific background */}
@@ -64,20 +58,20 @@ const footerLogo = `${imageKitEndpoint}/allgeo-solutions/home/AGS-white-logo.png
           {/* Brand */}
           <div>
             {/* Original AGS Logo */}
-   <a
-  href="/"
-  target="_blank"
-  rel="noopener noreferrer"
-  aria-label="AllGeo Solutions home"
-  className="inline-block"
->
-  <img
-    src={footerLogo}
-    alt="AllGeo Solutions"
-    className="h-auto w-[190px] object-contain sm:w-[215px]"
-    loading="lazy"
-  />
-</a>
+            <a
+              href="/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="AllGeo Solutions home"
+              className="inline-block"
+            >
+              <img
+                src={footerLogo}
+                alt="AllGeo Solutions"
+                className="h-auto w-[190px] object-contain sm:w-[215px]"
+                loading="lazy"
+              />
+            </a>
 
             <p className="mt-7 text-xs font-bold uppercase tracking-[0.18em] text-[var(--color-green)]">
               AllGeo Solutions
@@ -210,10 +204,7 @@ const footerLogo = `${imageKitEndpoint}/allgeo-solutions/home/AGS-white-logo.png
 
             <div className="mt-5 flex flex-col items-start gap-3.5">
               {services.map((service) => (
-                <FooterLink
-                  key={service.id}
-                  href={`/services/${service.slug}`}
-                >
+                <FooterLink key={service.id} href={`/services/${service.slug}`}>
                   {service.title}
                 </FooterLink>
               ))}
@@ -228,10 +219,7 @@ const footerLogo = `${imageKitEndpoint}/allgeo-solutions/home/AGS-white-logo.png
 
             <div className="mt-5 flex flex-col items-start gap-3.5">
               {products.map((product) => (
-                <FooterLink
-                  key={product.id}
-                  href={product.externalUrl}
-                >
+                <FooterLink key={product.id} href={product.externalUrl}>
                   {product.name}
                 </FooterLink>
               ))}
@@ -258,50 +246,50 @@ const footerLogo = `${imageKitEndpoint}/allgeo-solutions/home/AGS-white-logo.png
             BOTTOM BAR
         ===================================================== */}
 
-   <div className="mt-auto flex flex-col gap-5 pt-7 text-sm lg:flex-row lg:items-center lg:justify-between">
-  <p className="text-white/45">
-    © {currentYear} AllGeo Solutions. All Rights Reserved.
-  </p>
+        <div className="mt-auto flex flex-col gap-5 pt-7 text-sm lg:flex-row lg:items-center lg:justify-between">
+          <p className="text-white/45">
+            © {currentYear} AllGeo Solutions. All Rights Reserved.
+          </p>
 
-  <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
-    <a
-      href="/terms-and-conditions"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="text-white/55 transition-colors duration-200 hover:text-white"
-    >
-      Terms & Conditions
-    </a>
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+            <a
+              href="/terms-and-conditions"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white/55 transition-colors duration-200 hover:text-white"
+            >
+              Terms & Conditions
+            </a>
 
-    <a
-      href="/privacy-policy"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="text-white/55 transition-colors duration-200 hover:text-white"
-    >
-      Privacy Policy
-    </a>
-  </div>
+            <a
+              href="/privacy-policy"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white/55 transition-colors duration-200 hover:text-white"
+            >
+              Privacy Policy
+            </a>
+          </div>
 
-  <p className="flex flex-wrap items-center gap-1.5 text-white/55">
-    <span>Website Developed by</span>
+          <p className="flex flex-wrap items-center gap-1.5 text-white/55">
+            <span>Website Developed by</span>
 
-    <a
-      href={footerData.developerCredit.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="group inline-flex items-center gap-1 font-bold text-[var(--color-green)] transition-colors duration-200 hover:text-white"
-    >
-      <span>{footerData.developerCredit.label}</span>
+            <a
+              href={footerData.developerCredit.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex items-center gap-1 font-bold text-[var(--color-green)] transition-colors duration-200 hover:text-white"
+            >
+              <span>{footerData.developerCredit.label}</span>
 
-      <ArrowUpRight
-        aria-hidden="true"
-        className="h-3.5 w-3.5 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-        strokeWidth={2.2}
-      />
-    </a>
-  </p>
-</div>
+              <ArrowUpRight
+                aria-hidden="true"
+                className="h-3.5 w-3.5 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                strokeWidth={2.2}
+              />
+            </a>
+          </p>
+        </div>
       </div>
     </footer>
   );

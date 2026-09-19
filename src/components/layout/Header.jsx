@@ -1,12 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
-import {
-  ArrowRight,
-  ChevronDown,
-  Menu,
-  Search,
-  X,
-} from "lucide-react";
+import { ArrowRight, ChevronDown, Menu, Search, X } from "lucide-react";
 
 import { mainNavigation } from "../../data/navigation";
 
@@ -51,10 +45,7 @@ function Header() {
 
   useEffect(() => {
     function handlePointerDown(event) {
-      if (
-        servicesRef.current &&
-        !servicesRef.current.contains(event.target)
-      ) {
+      if (servicesRef.current && !servicesRef.current.contains(event.target)) {
         setServicesOpen(false);
       }
     }
@@ -119,45 +110,39 @@ function Header() {
             aria-label="AllGeo Solutions home"
             className="flex shrink-0 items-center"
           >
-        <img
-  src={allgeoLogo}
-  alt="AllGeo Solutions"
-  className="h-auto w-[150px] object-contain sm:w-[165px] lg:w-[175px]"
-/>
+            <img
+              src={allgeoLogo}
+              alt="AllGeo Solutions"
+              className="h-auto w-[150px] object-contain sm:w-[165px] lg:w-[175px]"
+            />
           </Link>
 
           {/* =================================================
               DESKTOP NAVIGATION
           ================================================= */}
 
-       <nav
-  aria-label="Primary navigation"
-  className="hidden text-[14px] font-medium xl:block"
->
+          <nav
+            aria-label="Primary navigation"
+            className="hidden text-[14px] font-medium xl:block"
+          >
             <ul className="flex items-center gap-0.5">
               {mainNavigation.map((item) => {
                 /* Services Dropdown */
 
                 if (item.children) {
                   return (
-                    <li
-                      key={item.label}
-                      ref={servicesRef}
-                      className="relative"
-                    >
+                    <li key={item.label} ref={servicesRef} className="relative">
                       <button
                         type="button"
                         aria-expanded={servicesOpen}
                         aria-haspopup="menu"
                         aria-controls="desktop-services-menu"
-                        onClick={() =>
-                          setServicesOpen((current) => !current)
-                        }
-className={`flex min-h-11 appearance-none items-center gap-1 rounded-md bg-transparent px-3.5 transition-colors duration-200 ${
-  isServicesActive
-    ? "text-[var(--color-green-dark)]"
-    : "text-slate-700 hover:text-[var(--color-navy)]"
-}`}
+                        onClick={() => setServicesOpen((current) => !current)}
+                        className={`flex min-h-11 appearance-none items-center gap-1 rounded-md bg-transparent px-3.5 transition-colors duration-200 ${
+                          isServicesActive
+                            ? "text-[var(--color-green-dark)]"
+                            : "text-slate-700 hover:text-[var(--color-navy)]"
+                        }`}
                       >
                         <span>{item.label}</span>
 
@@ -196,15 +181,9 @@ className={`flex min-h-11 appearance-none items-center gap-1 rounded-md bg-trans
 
                           {/* Service links */}
 
-                          <ul
-                            role="menu"
-                            className="mt-1"
-                          >
+                          <ul role="menu" className="mt-1">
                             {item.children.map((child) => (
-                              <li
-                                key={child.path}
-                                role="none"
-                              >
+                              <li key={child.path} role="none">
                                 <Link
                                   to={child.path}
                                   role="menuitem"
@@ -251,8 +230,6 @@ className={`flex min-h-11 appearance-none items-center gap-1 rounded-md bg-trans
             </ul>
           </nav>
 
-    
-
           {/* =================================================
               TABLET / MOBILE ACTIONS
           ================================================= */}
@@ -263,36 +240,23 @@ className={`flex min-h-11 appearance-none items-center gap-1 rounded-md bg-trans
               aria-label="Search website"
               className="flex h-11 w-11 items-center justify-center rounded-md text-[var(--color-navy)] transition-colors duration-200 hover:bg-slate-100"
             >
-              <Search
-                size={19}
-                aria-hidden="true"
-              />
+              <Search size={19} aria-hidden="true" />
             </button>
 
             <button
               type="button"
               aria-label={
-                mobileOpen
-                  ? "Close navigation menu"
-                  : "Open navigation menu"
+                mobileOpen ? "Close navigation menu" : "Open navigation menu"
               }
               aria-expanded={mobileOpen}
               aria-controls="mobile-navigation"
-              onClick={() =>
-                setMobileOpen((current) => !current)
-              }
+              onClick={() => setMobileOpen((current) => !current)}
               className="flex h-11 w-11 items-center justify-center rounded-md text-[var(--color-navy)] transition-colors duration-200 hover:bg-slate-100"
             >
               {mobileOpen ? (
-                <X
-                  size={23}
-                  aria-hidden="true"
-                />
+                <X size={23} aria-hidden="true" />
               ) : (
-                <Menu
-                  size={24}
-                  aria-hidden="true"
-                />
+                <Menu size={24} aria-hidden="true" />
               )}
             </button>
           </div>
@@ -306,9 +270,7 @@ className={`flex min-h-11 appearance-none items-center gap-1 rounded-md bg-trans
       <div
         id="mobile-navigation"
         className={`fixed inset-0 z-40 xl:hidden ${
-          mobileOpen
-            ? "pointer-events-auto"
-            : "pointer-events-none"
+          mobileOpen ? "pointer-events-auto" : "pointer-events-none"
         }`}
       >
         {/* Background overlay */}
@@ -318,9 +280,7 @@ className={`flex min-h-11 appearance-none items-center gap-1 rounded-md bg-trans
           aria-label="Close navigation menu"
           onClick={closeMobileMenu}
           className={`absolute inset-0 bg-[var(--color-navy)]/20 backdrop-blur-[2px] transition-opacity duration-300 ${
-            mobileOpen
-              ? "opacity-100"
-              : "opacity-0"
+            mobileOpen ? "opacity-100" : "opacity-0"
           }`}
         />
 
@@ -328,9 +288,7 @@ className={`flex min-h-11 appearance-none items-center gap-1 rounded-md bg-trans
 
         <div
           className={`absolute right-0 top-[var(--header-height)] h-[calc(100dvh-var(--header-height))] w-full max-w-[420px] overflow-y-auto border-l border-slate-200 bg-white shadow-2xl transition-transform duration-300 ${
-            mobileOpen
-              ? "translate-x-0"
-              : "translate-x-full"
+            mobileOpen ? "translate-x-0" : "translate-x-full"
           }`}
         >
           <nav
@@ -343,18 +301,13 @@ className={`flex min-h-11 appearance-none items-center gap-1 rounded-md bg-trans
 
                 if (item.children) {
                   return (
-                    <li
-                      key={item.label}
-                      className="border-b border-slate-100"
-                    >
+                    <li key={item.label} className="border-b border-slate-100">
                       <button
                         type="button"
                         aria-expanded={mobileServicesOpen}
                         aria-controls="mobile-services-menu"
                         onClick={() =>
-                          setMobileServicesOpen(
-                            (current) => !current,
-                          )
+                          setMobileServicesOpen((current) => !current)
                         }
                         className="flex min-h-14 w-full items-center justify-between text-left text-[15px] font-semibold text-[var(--color-navy)]"
                       >
@@ -364,9 +317,7 @@ className={`flex min-h-11 appearance-none items-center gap-1 rounded-md bg-trans
                           size={17}
                           aria-hidden="true"
                           className={`transition-transform duration-200 ${
-                            mobileServicesOpen
-                              ? "rotate-180"
-                              : ""
+                            mobileServicesOpen ? "rotate-180" : ""
                           }`}
                         />
                       </button>
@@ -401,10 +352,7 @@ className={`flex min-h-11 appearance-none items-center gap-1 rounded-md bg-trans
                               >
                                 <span>View all services</span>
 
-                                <ArrowRight
-                                  size={14}
-                                  aria-hidden="true"
-                                />
+                                <ArrowRight size={14} aria-hidden="true" />
                               </Link>
                             </li>
                           </ul>
@@ -417,10 +365,7 @@ className={`flex min-h-11 appearance-none items-center gap-1 rounded-md bg-trans
                 /* Standard Mobile Link */
 
                 return (
-                  <li
-                    key={item.path}
-                    className="border-b border-slate-100"
-                  >
+                  <li key={item.path} className="border-b border-slate-100">
                     <NavLink
                       to={item.path}
                       end={item.path === "/"}
@@ -458,13 +403,10 @@ className={`flex min-h-11 appearance-none items-center gap-1 rounded-md bg-trans
             {/* Mobile supporting content */}
 
             <div className="mt-8 border-t border-slate-100 pt-6">
-              <p className="section-eyebrow">
-                AllGeo Solutions
-              </p>
+              <p className="section-eyebrow">AllGeo Solutions</p>
 
               <p className="mt-2 max-w-[280px] text-sm leading-6 text-slate-500">
-                Scientific geoscience solutions for informed
-                decisions.
+                Scientific geoscience solutions for informed decisions.
               </p>
             </div>
           </nav>

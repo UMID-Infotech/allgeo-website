@@ -14,9 +14,7 @@ function ComingSoonPage() {
           Page Coming Soon
         </h1>
 
-        <p className="mt-4 text-slate-600">
-          Route: {location.pathname}
-        </p>
+        <p className="mt-4 text-slate-600">Route: {location.pathname}</p>
 
         <Link
           to="/"

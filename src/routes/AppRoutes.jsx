@@ -7,29 +7,28 @@ import ServiceDetailPage from "../pages/public/ServiceDetailPage";
 import ProductPage from "../pages/public/ProductPage";
 import ContactPage from "../pages/public/ContactPage";
 import AboutPage from "../pages/public/AboutPage";
-
+import PrivacyPolicyPage from "../pages/public/PrivacyPolicyPage";
+import TermsConditionsPage from "../pages/public/TermsConditionsPage";
 function AppRoutes() {
   return (
     <Routes>
       <Route element={<PublicLayout />}>
         <Route path="/" element={<HomePage />} />
 
-   <Route path="/about" element={<AboutPage />} />
+        <Route path="/about" element={<AboutPage />} />
 
-        <Route
-          path="/services/:slug"
-          element={<ServiceDetailPage />}
-        />
+        <Route path="/services/:slug" element={<ServiceDetailPage />} />
 
         <Route path="/product" element={<ProductPage />} />
-        <Route path="/projects" element={<ComingSoonPage />} />
+        {/* <Route path="/projects" element={<ComingSoonPage />} />
 
         <Route path="/blog" element={<ComingSoonPage />} />
         <Route path="/blog/:slug" element={<ComingSoonPage />} />
 
-        <Route path="/gallery" element={<ComingSoonPage />} />
-       <Route path="/contact" element={<ContactPage />} />
-
+        <Route path="/gallery" element={<ComingSoonPage />} /> */}
+        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+        <Route path="/terms-and-conditions" element={<TermsConditionsPage />} />
         <Route path="*" element={<ComingSoonPage />} />
       </Route>
     </Routes>

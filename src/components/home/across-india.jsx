@@ -1,17 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import {
-  BriefcaseBusiness,
-  Map,
-  ScanSearch,
-} from "lucide-react";
+import { BriefcaseBusiness, Map, ScanSearch } from "lucide-react";
 
 import presenceData from "../../data/presence.js";
 
-const capabilityIcons = [
-  Map,
-  BriefcaseBusiness,
-  ScanSearch,
-];
+const capabilityIcons = [Map, BriefcaseBusiness, ScanSearch];
 
 function AcrossIndia() {
   const sectionRef = useRef(null);
@@ -19,31 +11,31 @@ function AcrossIndia() {
 
   const imageUrl = `${import.meta.env.VITE_IMAGEKIT_URL_ENDPOINT}${presenceData.image.src}`;
 
-useEffect(() => {
-  const section = sectionRef.current;
+  useEffect(() => {
+    const section = sectionRef.current;
 
-  if (!section) {
-    return undefined;
-  }
+    if (!section) {
+      return undefined;
+    }
 
-  const observer = new IntersectionObserver(
-    ([entry]) => {
-      if (entry.isIntersecting) {
-        setIsVisible(true);
-        observer.disconnect();
-      }
-    },
-    {
-      threshold: 0.16,
-    },
-  );
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      {
+        threshold: 0.16,
+      },
+    );
 
-  observer.observe(section);
+    observer.observe(section);
 
-  return () => {
-    observer.disconnect();
-  };
-}, []);
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   const revealBase =
     "transition-[opacity,transform] duration-700 ease-out motion-reduce:translate-x-0 motion-reduce:translate-y-0 motion-reduce:scale-100 motion-reduce:opacity-100 motion-reduce:transition-none";
@@ -58,10 +50,7 @@ useEffect(() => {
           SCIENTIFIC BACKGROUND
       ===================================================== */}
 
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0"
-      >
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
         {/* Deep navy tonal gradient */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_76%_48%,rgba(24,120,160,0.16)_0%,rgba(8,45,87,0.05)_38%,transparent_68%)]" />
 
@@ -75,10 +64,7 @@ useEffect(() => {
           xmlns="http://www.w3.org/2000/svg"
           className="absolute -left-52 top-1/2 h-[650px] w-[650px] -translate-y-1/2 opacity-[0.10]"
         >
-          <g
-            stroke="var(--color-green-light)"
-            strokeWidth="1"
-          >
+          <g stroke="var(--color-green-light)" strokeWidth="1">
             <path d="M75 272C111 163 220 91 335 108C448 125 538 219 535 329C532 440 436 529 323 532C208 535 106 456 72 350C64 324 64 297 75 272Z" />
             <path d="M119 279C148 193 235 136 327 149C418 162 490 237 488 326C486 414 409 484 319 487C228 489 147 426 120 342C113 321 113 299 119 279Z" />
             <path d="M163 286C185 222 250 179 320 189C389 199 444 256 442 324C440 391 382 444 314 446C245 448 184 400 163 337C158 320 158 302 163 286Z" />
@@ -93,10 +79,7 @@ useEffect(() => {
           xmlns="http://www.w3.org/2000/svg"
           className="absolute -right-24 -top-32 h-[560px] w-[560px] opacity-[0.08]"
         >
-          <g
-            stroke="var(--color-green)"
-            strokeWidth="1"
-          >
+          <g stroke="var(--color-green)" strokeWidth="1">
             <path d="M50 240C84 130 196 55 312 75C426 95 505 199 490 311C475 421 372 500 258 488C143 476 55 383 45 274C44 262 46 250 50 240Z" />
             <path d="M94 245C121 159 210 101 301 116C391 132 453 214 442 302C430 389 349 451 260 442C169 432 100 359 92 273C91 263 92 253 94 245Z" />
             <path d="M138 250C159 188 224 145 292 157C358 168 405 229 396 294C387 359 327 405 261 398C194 391 143 337 137 274C136 266 136 258 138 250Z" />

@@ -1,9 +1,4 @@
-import {
-  Binary,
-  Layers3,
-  Map,
-  Network,
-} from "lucide-react";
+import { Binary, Layers3, Map, Network } from "lucide-react";
 
 const principles = [
   {

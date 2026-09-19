@@ -46,9 +46,7 @@ function ProductItem({ product, index, imageKitEndpoint }) {
       ref={itemRef}
       id={product.anchor}
       className={`scroll-mt-24 border-b border-[var(--color-border)] ${
-        isReversed
-          ? "bg-[var(--color-background-blue)]"
-          : "bg-white"
+        isReversed ? "bg-[var(--color-background-blue)]" : "bg-white"
       }`}
     >
       <div className="site-container section-spacing">
@@ -122,11 +120,7 @@ function ProductItem({ product, index, imageKitEndpoint }) {
                       }}
                     >
                       <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[var(--color-green-light)] text-[var(--color-green-dark)]">
-                        <Check
-                          size={12}
-                          strokeWidth={3}
-                          aria-hidden="true"
-                        />
+                        <Check size={12} strokeWidth={3} aria-hidden="true" />
                       </span>
 
                       <span className="text-sm leading-6 text-[var(--color-text)]">

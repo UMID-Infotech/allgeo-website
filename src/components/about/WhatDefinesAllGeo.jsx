@@ -1,10 +1,4 @@
-import {
-  Activity,
-  ChartNoAxesCombined,
-  Cpu,
-  Map,
-  Search,
-} from "lucide-react";
+import { Activity, ChartNoAxesCombined, Cpu, Map, Search } from "lucide-react";
 
 const stages = [
   {
@@ -60,8 +54,8 @@ function WhatDefinesAllGeo() {
 
           <p className="mx-auto mt-6 max-w-2xl leading-8 text-[var(--color-text-muted)]">
             Our work follows a connected process where science, field
-            investigation, technology and interpretation contribute to a
-            clearer understanding of the ground.
+            investigation, technology and interpretation contribute to a clearer
+            understanding of the ground.
           </p>
         </div>
 

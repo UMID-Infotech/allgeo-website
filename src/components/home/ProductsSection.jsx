@@ -56,9 +56,7 @@ function ProductsSection() {
         {/* Section heading */}
         <div
           className={`grid gap-5 transition-all duration-700 ease-out motion-reduce:transform-none motion-reduce:opacity-100 motion-reduce:transition-none lg:grid-cols-[1fr_340px] lg:items-end ${
-            isVisible
-              ? "translate-y-0 opacity-100"
-              : "translate-y-5 opacity-0"
+            isVisible ? "translate-y-0 opacity-100" : "translate-y-5 opacity-0"
           }`}
         >
           <div>
@@ -73,8 +71,8 @@ function ProductsSection() {
           </div>
 
           <p className="max-w-md text-sm leading-6 text-[var(--color-text-muted)] sm:text-base lg:justify-self-end">
-            Advanced TEM systems designed for reliable subsurface
-            investigation across diverse applications and terrains.
+            Advanced TEM systems designed for reliable subsurface investigation
+            across diverse applications and terrains.
           </p>
         </div>
 
@@ -83,7 +81,7 @@ function ProductsSection() {
           {products.map((product, index) => {
             const productUrl = `/product#${product.anchor}`;
             const imageUrl = `${imageKitEndpoint}${product.image.src}`;
-console.log(product.name, product.image.src, imageUrl);
+            console.log(product.name, product.image.src, imageUrl);
             return (
               <article
                 key={product.id}
@@ -93,9 +91,7 @@ console.log(product.name, product.image.src, imageUrl);
                     : "translate-y-6 opacity-0"
                 }`}
                 style={{
-                  transitionDelay: isVisible
-                    ? `${120 + index * 90}ms`
-                    : "0ms",
+                  transitionDelay: isVisible ? `${120 + index * 90}ms` : "0ms",
                 }}
               >
                 {/* Product image */}
@@ -134,10 +130,7 @@ console.log(product.name, product.image.src, imageUrl);
                     aria-label={`Open ${product.name}`}
                     className="mt-auto flex h-11 w-11 shrink-0 items-center justify-center self-end rounded-full border border-[var(--color-border)] text-[var(--color-navy)] transition-all duration-300 hover:border-[var(--color-green)] hover:bg-[var(--color-green)] hover:text-white"
                   >
-                    <ArrowRight
-                      aria-hidden="true"
-                      className="h-4 w-4"
-                    />
+                    <ArrowRight aria-hidden="true" className="h-4 w-4" />
                   </a>
                 </div>
               </article>

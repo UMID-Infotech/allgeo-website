@@ -111,9 +111,9 @@ function ProductAttribution() {
               information to help clients understand TEM technologies relevant
               to geophysical and subsurface investigations and does not claim
               ownership of these products or their underlying technology. For
-              complete and current product information, technical
-              specifications and manufacturer documentation, please refer to
-              the official TEMcompany website.
+              complete and current product information, technical specifications
+              and manufacturer documentation, please refer to the official
+              TEMcompany website.
             </p>
           </div>
 

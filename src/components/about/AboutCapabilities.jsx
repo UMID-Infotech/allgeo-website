@@ -1,10 +1,4 @@
-import {
-  Droplets,
-  Earth,
-  Leaf,
-  MapPinned,
-  RadioTower,
-} from "lucide-react";
+import { Droplets, Earth, Leaf, MapPinned, RadioTower } from "lucide-react";
 
 const capabilities = [
   {
@@ -65,10 +59,9 @@ function AboutCapabilities() {
             </h2>
 
             <p className="mt-6 max-w-md leading-8 text-[var(--color-text-muted)]">
-              Subsurface challenges rarely belong to a single discipline.
-              AllGeo brings complementary geoscience capabilities together to
-              build a more complete understanding of the site and its
-              conditions.
+              Subsurface challenges rarely belong to a single discipline. AllGeo
+              brings complementary geoscience capabilities together to build a
+              more complete understanding of the site and its conditions.
             </p>
 
             <div className="mt-8 hidden h-px w-full bg-gradient-to-r from-[var(--color-green)] to-transparent lg:block" />

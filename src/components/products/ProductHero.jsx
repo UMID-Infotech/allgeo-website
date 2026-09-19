@@ -6,8 +6,7 @@ function ProductHero() {
 
   const imageKitEndpoint = import.meta.env.VITE_IMAGEKIT_URL_ENDPOINT;
 
-  const heroImage =
-    `${imageKitEndpoint}/allgeo-solutions/home/temtechproduct.webp`;
+  const heroImage = `${imageKitEndpoint}/allgeo-solutions/home/temtechproduct.webp`;
 
   useEffect(() => {
     const animationFrame = requestAnimationFrame(() => {

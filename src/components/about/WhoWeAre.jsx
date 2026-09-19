@@ -73,11 +73,11 @@ function WhoWeAre() {
             </p>
 
             <p className="mt-5 max-w-xl text-base leading-8 text-[var(--color-text-muted)]">
-              Our approach connects field investigation with modern
-              geophysical technologies, geological understanding, geospatial
-              intelligence and technical interpretation. The objective is not
-              simply to collect data, but to convert complex ground conditions
-              into clear and useful information for better project decisions.
+              Our approach connects field investigation with modern geophysical
+              technologies, geological understanding, geospatial intelligence
+              and technical interpretation. The objective is not simply to
+              collect data, but to convert complex ground conditions into clear
+              and useful information for better project decisions.
             </p>
           </div>
 

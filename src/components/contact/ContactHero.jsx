@@ -5,8 +5,7 @@ function ContactHero() {
 
   const imageKitEndpoint = import.meta.env.VITE_IMAGEKIT_URL_ENDPOINT;
 
-  const heroImage =
-    `${imageKitEndpoint}/allgeo-solutions/home/contact-hero.png`;
+  const heroImage = `${imageKitEndpoint}/allgeo-solutions/home/contact-hero.png`;
 
   useEffect(() => {
     const animationFrame = requestAnimationFrame(() => {

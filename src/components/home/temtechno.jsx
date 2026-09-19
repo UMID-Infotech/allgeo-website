@@ -1,16 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Image } from "@imagekit/react";
-import {
-  Activity,
-  Clock3,
-  Layers3,
-  Leaf,
-  Radio,
-  Zap,
-} from "lucide-react";
+import { Activity, Clock3, Layers3, Leaf, Radio, Zap } from "lucide-react";
 
-const TEM_IMAGE_PATH =
-  "/allgeo-solutions/home/temtechproduct.webp";
+const TEM_IMAGE_PATH = "/allgeo-solutions/home/temtechproduct.webp";
 
 const temCapabilities = [
   {
@@ -52,8 +44,7 @@ const temCapabilities = [
 ];
 
 function TemTechno() {
-  const imageKitEndpoint =
-    import.meta.env.VITE_IMAGEKIT_URL_ENDPOINT;
+  const imageKitEndpoint = import.meta.env.VITE_IMAGEKIT_URL_ENDPOINT;
 
   const sectionRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -94,10 +85,7 @@ function TemTechno() {
       className="relative isolate overflow-hidden bg-white"
     >
       {/* Decorative scientific background */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0"
-      >
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(241,247,251,0.62)_0%,rgba(255,255,255,0.92)_35%,rgba(255,255,255,1)_70%)]" />
 
         <svg
@@ -106,10 +94,7 @@ function TemTechno() {
           xmlns="http://www.w3.org/2000/svg"
           className="absolute -left-20 top-1/2 h-[520px] w-[760px] -translate-y-1/2 opacity-[0.11]"
         >
-          <g
-            stroke="var(--color-navy-light)"
-            strokeWidth="1"
-          >
+          <g stroke="var(--color-navy-light)" strokeWidth="1">
             <path d="M48 214C91 96 220 32 343 66C459 98 552 199 538 305C525 403 422 455 315 424C206 393 92 353 48 214Z" />
             <path d="M91 217C126 124 229 76 329 102C424 127 500 207 489 291C478 370 396 411 310 387C222 362 126 327 91 217Z" />
             <path d="M136 219C163 152 239 116 317 136C392 155 450 216 442 280C433 340 371 372 304 353C236 334 163 307 136 219Z" />
@@ -125,9 +110,7 @@ function TemTechno() {
 
         <div
           className={`${revealBase} mb-10 flex items-center gap-4 ${
-            isVisible
-              ? "translate-y-0 opacity-100"
-              : "translate-y-5 opacity-0"
+            isVisible ? "translate-y-0 opacity-100" : "translate-y-5 opacity-0"
           }`}
         >
           <p className="section-eyebrow whitespace-nowrap">
@@ -166,13 +149,11 @@ function TemTechno() {
                   : "translate-y-6 opacity-0"
               }`}
             >
-              The Transient Electromagnetic (TEM) geophysical
-              survey method is a modern technique designed to
-              measure vertical resistivity profiles with
-              particular sensitivity to conductive materials.
-              It enables fast, non-invasive investigation of
-              subsurface conditions for reliable geoscientific
-              interpretation.
+              The Transient Electromagnetic (TEM) geophysical survey method is a
+              modern technique designed to measure vertical resistivity profiles
+              with particular sensitivity to conductive materials. It enables
+              fast, non-invasive investigation of subsurface conditions for
+              reliable geoscientific interpretation.
             </p>
 
             <div
@@ -252,11 +233,7 @@ function TemTechno() {
                     }}
                   >
                     <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[var(--color-green-light)] text-[var(--color-green-dark)] transition-transform duration-200 group-hover:-translate-y-0.5">
-                      <Icon
-                        size={20}
-                        strokeWidth={1.8}
-                        aria-hidden="true"
-                      />
+                      <Icon size={20} strokeWidth={1.8} aria-hidden="true" />
                     </div>
 
                     <div>

@@ -1,9 +1,4 @@
-import {
-  BarChart3,
-  ClipboardCheck,
-  Database,
-  MapPinCheck,
-} from "lucide-react";
+import { BarChart3, ClipboardCheck, Database, MapPinCheck } from "lucide-react";
 
 const workflow = [
   {

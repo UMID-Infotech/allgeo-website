@@ -17,9 +17,7 @@ function ServiceAccordion({ service }) {
   }
 
   const handleToggle = (index) => {
-    setActiveIndex((currentIndex) =>
-      currentIndex === index ? null : index,
-    );
+    setActiveIndex((currentIndex) => (currentIndex === index ? null : index));
   };
 
   return (
@@ -56,14 +54,12 @@ function ServiceAccordion({ service }) {
 
           <h2 className="mt-5 text-3xl font-bold leading-tight tracking-tight text-[var(--color-navy)] sm:text-4xl lg:text-5xl">
             Explore Our{" "}
-            <span className="text-[var(--color-green)]">
-              {service.title}
-            </span>
+            <span className="text-[var(--color-green)]">{service.title}</span>
           </h2>
 
           <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-[var(--color-text-muted)] sm:text-lg">
-            Explore the specialized capabilities and solutions we provide
-            across this service area.
+            Explore the specialized capabilities and solutions we provide across
+            this service area.
           </p>
         </div>
 
@@ -160,8 +156,7 @@ function ServiceAccordion({ service }) {
                             <div
                               key={`${item.id}-image-${imageIndex}`}
                               className={`overflow-hidden rounded-xl border border-[var(--color-border)] bg-white ${
-                                item.images.length === 3 &&
-                                imageIndex === 0
+                                item.images.length === 3 && imageIndex === 0
                                   ? "col-span-2"
                                   : ""
                               }`}

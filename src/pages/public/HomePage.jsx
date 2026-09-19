@@ -10,7 +10,6 @@ import CTASection from "../../components/home/CTASection";
 function HomePage() {
   return (
     <>
-
       <main>
         <HeroSection />
         <TemTechno />
