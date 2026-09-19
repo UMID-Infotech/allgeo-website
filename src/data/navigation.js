@@ -12,9 +12,9 @@ export const mainNavigation = [
     path: "/services",
     children: [
       {
-        label: "Geophysical Services",
-        path: "/services/geophysical-services",
-      },
+  label: "Geophysical Surveys",
+  path: "/services/geophysical-surveys",
+},
       {
         label: "Geological Services",
         path: "/services/geological-services",
