@@ -6,6 +6,7 @@ import ComingSoonPage from "../pages/public/ComingSoonPage";
 import ServiceDetailPage from "../pages/public/ServiceDetailPage";
 import ProductPage from "../pages/public/ProductPage";
 import ContactPage from "../pages/public/ContactPage";
+import AboutPage from "../pages/public/AboutPage";
 
 function AppRoutes() {
   return (
@@ -13,7 +14,7 @@ function AppRoutes() {
       <Route element={<PublicLayout />}>
         <Route path="/" element={<HomePage />} />
 
-        <Route path="/about" element={<ComingSoonPage />} />
+   <Route path="/about" element={<AboutPage />} />
 
         <Route
           path="/services/:slug"

@@ -6,7 +6,7 @@ import {
   Phone,
   ShieldCheck,
 } from "lucide-react";
-
+import { submitEnquiry } from "../../services/enquiryService";
 function CTASection() {
   const sectionRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -15,6 +15,15 @@ function CTASection() {
     name: "",
     email: "",
     contactNumber: "",
+    message: "",
+  });
+
+  // Form submission state
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Success / error message state
+  const [submitStatus, setSubmitStatus] = useState({
+    type: "",
     message: "",
   });
 
@@ -44,22 +53,63 @@ function CTASection() {
     };
   }, []);
 
-  function handleChange(event) {
-    const { name, value } = event.target;
+function handleChange(event) {
+  const { name, value } = event.target;
 
-    setFormData((currentData) => ({
-      ...currentData,
-      [name]: value,
-    }));
+  setFormData((currentData) => ({
+    ...currentData,
+    [name]: value,
+  }));
+
+  if (submitStatus.message) {
+    setSubmitStatus({
+      type: "",
+      message: "",
+    });
+  }
+}
+
+async function handleSubmit(event) {
+  event.preventDefault();
+
+  if (isSubmitting) {
+    return;
   }
 
-  function handleSubmit(event) {
-    event.preventDefault();
+  setIsSubmitting(true);
 
-    // Backend API will be connected later.
-    console.log("Enquiry form data:", formData);
+  setSubmitStatus({
+    type: "",
+    message: "",
+  });
+
+  try {
+    const response = await submitEnquiry(formData);
+
+    setSubmitStatus({
+      type: "success",
+      message:
+        response.message ||
+        "Thank you. Your enquiry has been submitted successfully.",
+    });
+
+    setFormData({
+      name: "",
+      email: "",
+      contactNumber: "",
+      message: "",
+    });
+  } catch (error) {
+    setSubmitStatus({
+      type: "error",
+      message:
+        error.message ||
+        "Unable to submit your enquiry. Please try again.",
+    });
+  } finally {
+    setIsSubmitting(false);
   }
-
+}
   return (
     <section
       ref={sectionRef}
@@ -331,12 +381,28 @@ function CTASection() {
                 {/* Submit button */}
 <button
   type="submit"
-  className="flex w-full items-center justify-center rounded-xl bg-[var(--color-green)] px-6 py-2.5 text-base font-bold text-white shadow-[0_10px_25px_rgba(22,163,74,0.22)] transition-all duration-300 hover:bg-[var(--color-green-dark)] hover:shadow-[0_14px_30px_rgba(22,163,74,0.28)] focus-visible:ring-2 focus-visible:ring-[var(--color-green)] focus-visible:ring-offset-2"
+  disabled={isSubmitting}
+  className="flex w-full items-center justify-center rounded-xl bg-[var(--color-green)] px-6 py-2.5 text-base font-bold text-white shadow-[0_10px_25px_rgba(22,163,74,0.22)] transition-all duration-300 hover:bg-[var(--color-green-dark)] hover:shadow-[0_14px_30px_rgba(22,163,74,0.28)] focus-visible:ring-2 focus-visible:ring-[var(--color-green)] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
 >
-  Submit Enquiry
+  {isSubmitting ? "Sending Enquiry..." : "Submit Enquiry"}
 </button>
-                {/* Supporting note */}
-                <div className="flex items-center justify-center gap-2 pt-1 text-center text-xs leading-5 text-[var(--color-text-muted)] sm:text-sm">
+
+{submitStatus.message && (
+  <div
+    role="status"
+    aria-live="polite"
+    className={`rounded-lg border px-4 py-3 text-sm font-medium ${
+      submitStatus.type === "success"
+        ? "border-green-200 bg-green-50 text-green-700"
+        : "border-red-200 bg-red-50 text-red-700"
+    }`}
+  >
+    {submitStatus.message}
+  </div>
+)}
+
+{/* Supporting note */}
+<div className="flex items-center justify-center gap-2 pt-1 text-center text-xs leading-5 text-[var(--color-text-muted)] sm:text-sm">
                   <ShieldCheck
                     aria-hidden="true"
                     className="h-4 w-4 shrink-0 text-[var(--color-green)]"

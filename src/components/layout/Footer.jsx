@@ -6,7 +6,6 @@ import {
   Phone,
 } from "lucide-react";
 
-import allgeoLogo from "../../assets/brand/allgeo-logo.png";
 import services from "../../data/services.js";
 import products from "../../data/products.js";
 import footerData from "../../data/footer.js";
@@ -32,7 +31,9 @@ function FooterLink({ href, children }) {
 
 function Footer() {
   const currentYear = new Date().getFullYear();
+const imageKitEndpoint = import.meta.env.VITE_IMAGEKIT_URL_ENDPOINT;
 
+const footerLogo = `${imageKitEndpoint}/allgeo-solutions/home/AGS-white-logo.png`;
   return (
     <footer className="relative min-h-screen overflow-hidden bg-[var(--color-navy)] text-white">
       {/* Scientific background */}
@@ -63,19 +64,20 @@ function Footer() {
           {/* Brand */}
           <div>
             {/* Original AGS Logo */}
-            <a
-              href="/"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="AllGeo Solutions home"
-              className="inline-flex rounded-xl bg-white px-5 py-3 shadow-[0_12px_35px_rgba(0,0,0,0.12)]"
-            >
-              <img
-                src={allgeoLogo}
-                alt="AllGeo Solutions"
-                className="h-auto w-[160px] object-contain sm:w-[175px]"
-              />
-            </a>
+   <a
+  href="/"
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label="AllGeo Solutions home"
+  className="inline-block"
+>
+  <img
+    src={footerLogo}
+    alt="AllGeo Solutions"
+    className="h-auto w-[190px] object-contain sm:w-[215px]"
+    loading="lazy"
+  />
+</a>
 
             <p className="mt-7 text-xs font-bold uppercase tracking-[0.18em] text-[var(--color-green)]">
               AllGeo Solutions
@@ -256,31 +258,50 @@ function Footer() {
             BOTTOM BAR
         ===================================================== */}
 
-        <div className="mt-auto flex flex-col gap-5 pt-7 text-sm sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-white/45">
-            © {currentYear} AllGeo Solutions. All Rights Reserved.
-          </p>
+   <div className="mt-auto flex flex-col gap-5 pt-7 text-sm lg:flex-row lg:items-center lg:justify-between">
+  <p className="text-white/45">
+    © {currentYear} AllGeo Solutions. All Rights Reserved.
+  </p>
 
-          {/* UMID Infotech Credit */}
-          <p className="flex flex-wrap items-center gap-1.5 text-white/55">
-            <span>Website Developed by</span>
+  <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+    <a
+      href="/terms-and-conditions"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="text-white/55 transition-colors duration-200 hover:text-white"
+    >
+      Terms & Conditions
+    </a>
 
-            <a
-              href={footerData.developerCredit.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group inline-flex items-center gap-1 font-bold text-[var(--color-green)] transition-colors duration-200 hover:text-white"
-            >
-              <span>{footerData.developerCredit.label}</span>
+    <a
+      href="/privacy-policy"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="text-white/55 transition-colors duration-200 hover:text-white"
+    >
+      Privacy Policy
+    </a>
+  </div>
 
-              <ArrowUpRight
-                aria-hidden="true"
-                className="h-3.5 w-3.5 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                strokeWidth={2.2}
-              />
-            </a>
-          </p>
-        </div>
+  <p className="flex flex-wrap items-center gap-1.5 text-white/55">
+    <span>Website Developed by</span>
+
+    <a
+      href={footerData.developerCredit.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group inline-flex items-center gap-1 font-bold text-[var(--color-green)] transition-colors duration-200 hover:text-white"
+    >
+      <span>{footerData.developerCredit.label}</span>
+
+      <ArrowUpRight
+        aria-hidden="true"
+        className="h-3.5 w-3.5 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+        strokeWidth={2.2}
+      />
+    </a>
+  </p>
+</div>
       </div>
     </footer>
   );
