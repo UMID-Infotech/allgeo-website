@@ -4,6 +4,8 @@ import PublicLayout from "../components/layout/PublicLayout";
 import HomePage from "../pages/public/HomePage";
 import ComingSoonPage from "../pages/public/ComingSoonPage";
 import ServiceDetailPage from "../pages/public/ServiceDetailPage";
+import ProductPage from "../pages/public/ProductPage";
+import ContactPage from "../pages/public/ContactPage";
 
 function AppRoutes() {
   return (
@@ -18,16 +20,14 @@ function AppRoutes() {
           element={<ServiceDetailPage />}
         />
 
-        <Route path="/products" element={<ComingSoonPage />} />
-        <Route path="/products/:slug" element={<ComingSoonPage />} />
-
+        <Route path="/product" element={<ProductPage />} />
         <Route path="/projects" element={<ComingSoonPage />} />
 
         <Route path="/blog" element={<ComingSoonPage />} />
         <Route path="/blog/:slug" element={<ComingSoonPage />} />
 
         <Route path="/gallery" element={<ComingSoonPage />} />
-        <Route path="/contact" element={<ComingSoonPage />} />
+       <Route path="/contact" element={<ContactPage />} />
 
         <Route path="*" element={<ComingSoonPage />} />
       </Route>

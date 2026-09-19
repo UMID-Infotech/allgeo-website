@@ -222,21 +222,6 @@ className={`flex min-h-11 appearance-none items-center gap-1 rounded-md bg-trans
                               </li>
                             ))}
                           </ul>
-
-                          {/* View all */}
-
-                          <Link
-                            to="/services"
-                            onClick={closeDesktopServices}
-                            className="mt-1 flex items-center justify-between border-t border-slate-100 px-3 py-3 text-[12px] font-semibold text-[var(--color-green-dark)]"
-                          >
-                            <span>View all services</span>
-
-                            <ArrowRight
-                              size={14}
-                              aria-hidden="true"
-                            />
-                          </Link>
                         </div>
                       </div>
                     </li>
@@ -266,36 +251,7 @@ className={`flex min-h-11 appearance-none items-center gap-1 rounded-md bg-trans
             </ul>
           </nav>
 
-          {/* =================================================
-              DESKTOP ACTIONS
-          ================================================= */}
-{/* 
-          <div className="hidden items-center gap-3 xl:flex">
-            <button
-              type="button"
-              aria-label="Search website"
-              className="flex h-11 w-11 items-center justify-center rounded-md text-[var(--color-navy)] transition-colors duration-200 hover:bg-slate-100"
-            >
-              <Search
-                size={19}
-                strokeWidth={1.8}
-                aria-hidden="true"
-              />
-            </button>
-
-            <Link
-              to="/contact"
-              className="group flex min-h-11 items-center gap-2 rounded-[6px] bg-[var(--color-green)] px-5 text-[13px] font-semibold text-white shadow-[0_8px_20px_rgba(21,148,71,0.16)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[var(--color-green-dark)]"
-            >
-              <span>Request a Quote</span>
-
-              <ArrowRight
-                size={16}
-                aria-hidden="true"
-                className="transition-transform duration-200 group-hover:translate-x-1"
-              />
-            </Link>
-          </div> */}
+    
 
           {/* =================================================
               TABLET / MOBILE ACTIONS

@@ -35,7 +35,7 @@ export const mainNavigation = [
   },
   {
     label: "Products",
-    path: "/products",
+    path: "/product",
   },
   {
     label: "Projects",
