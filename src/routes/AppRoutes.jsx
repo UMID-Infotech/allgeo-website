@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 
 import PublicLayout from "../components/layout/PublicLayout";
 import HomePage from "../pages/public/HomePage";
@@ -9,27 +9,113 @@ import ContactPage from "../pages/public/ContactPage";
 import AboutPage from "../pages/public/AboutPage";
 import PrivacyPolicyPage from "../pages/public/PrivacyPolicyPage";
 import TermsConditionsPage from "../pages/public/TermsConditionsPage";
+
+// Admin
+import AdminLayout from "../layouts/AdminLayout";
+import AdminLogin from "../pages/admin/AdminLogin";
+import AdminDashboard from "../pages/admin/AdminDashboard";
+import ProtectedAdminRoute from "../components/admin/ProtectedAdminRoute";
+
 function AppRoutes() {
   return (
     <Routes>
+      {/* ================= ADMIN ================= */}
+
+      {/* Public Admin Login */}
+      <Route
+        path="/admin/login"
+        element={<AdminLogin />}
+      />
+
+      {/* Protected Admin Area */}
+      <Route element={<ProtectedAdminRoute />}>
+        <Route
+          path="/admin"
+          element={<AdminLayout />}
+        >
+          <Route
+            index
+            element={
+              <Navigate
+                to="/admin/dashboard"
+                replace
+              />
+            }
+          />
+
+          <Route
+            path="dashboard"
+            element={<AdminDashboard />}
+          />
+        </Route>
+      </Route>
+
+      {/* ============== PUBLIC WEBSITE ============== */}
+
       <Route element={<PublicLayout />}>
-        <Route path="/" element={<HomePage />} />
+        <Route
+          path="/"
+          element={<HomePage />}
+        />
 
-        <Route path="/about" element={<AboutPage />} />
+        <Route
+          path="/about"
+          element={<AboutPage />}
+        />
 
-        <Route path="/services/:slug" element={<ServiceDetailPage />} />
+        <Route
+          path="/services/:slug"
+          element={<ServiceDetailPage />}
+        />
 
-        <Route path="/product" element={<ProductPage />} />
-        {/* <Route path="/projects" element={<ComingSoonPage />} />
+        <Route
+          path="/product"
+          element={<ProductPage />}
+        />
 
-        <Route path="/blog" element={<ComingSoonPage />} />
-        <Route path="/blog/:slug" element={<ComingSoonPage />} />
+        {/* Future Routes
 
-        <Route path="/gallery" element={<ComingSoonPage />} /> */}
-        <Route path="/contact" element={<ContactPage />} />
-        <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
-        <Route path="/terms-and-conditions" element={<TermsConditionsPage />} />
-        <Route path="*" element={<ComingSoonPage />} />
+        <Route
+          path="/projects"
+          element={<ComingSoonPage />}
+        />
+
+        <Route
+          path="/blog"
+          element={<ComingSoonPage />}
+        />
+
+        <Route
+          path="/blog/:slug"
+          element={<ComingSoonPage />}
+        />
+
+        <Route
+          path="/gallery"
+          element={<ComingSoonPage />}
+        />
+
+        */}
+
+        <Route
+          path="/contact"
+          element={<ContactPage />}
+        />
+
+        <Route
+          path="/privacy-policy"
+          element={<PrivacyPolicyPage />}
+        />
+
+        <Route
+          path="/terms-and-conditions"
+          element={<TermsConditionsPage />}
+        />
+
+        <Route
+          path="*"
+          element={<ComingSoonPage />}
+        />
       </Route>
     </Routes>
   );
@@ -37,26 +123,81 @@ function AppRoutes() {
 
 export default AppRoutes;
 
-// import { Route, Routes } from "react-router-dom";
+// import { Navigate, Route, Routes } from "react-router-dom";
+
+// import PublicLayout from "../components/layout/PublicLayout";
 // import HomePage from "../pages/public/HomePage";
 // import ComingSoonPage from "../pages/public/ComingSoonPage";
 // import ServiceDetailPage from "../pages/public/ServiceDetailPage";
+// import ProductPage from "../pages/public/ProductPage";
+// import ContactPage from "../pages/public/ContactPage";
+// import AboutPage from "../pages/public/AboutPage";
+// import PrivacyPolicyPage from "../pages/public/PrivacyPolicyPage";
+// import TermsConditionsPage from "../pages/public/TermsConditionsPage";
+
+// // Admin
+// import AdminLayout from "../layouts/AdminLayout";
+// import AdminLogin from "../pages/admin/AdminLogin";
+// import AdminDashboard from "../pages/admin/AdminDashboard";
+
 // function AppRoutes() {
 //   return (
 //     <Routes>
-//       <Route path="/" element={<HomePage />} />
+//       {/* ================= ADMIN ================= */}
 
-//       <Route path="/about" element={<ComingSoonPage />} />
-// <Route path="/services/:slug" element={<ServiceDetailPage />} />
-//       <Route path="/products" element={<ComingSoonPage />} />
-//       <Route path="/products/:slug" element={<ComingSoonPage />} />
-//       <Route path="/projects" element={<ComingSoonPage />} />
-//       <Route path="/blog" element={<ComingSoonPage />} />
-//       <Route path="/blog/:slug" element={<ComingSoonPage />} />
-//       <Route path="/gallery" element={<ComingSoonPage />} />
-//       <Route path="/contact" element={<ComingSoonPage />} />
+//       <Route path="/admin/login" element={<AdminLogin />} />
 
-//       <Route path="*" element={<ComingSoonPage />} />
+//       <Route path="/admin" element={<AdminLayout />}>
+//         <Route
+//           index
+//           element={<Navigate to="/admin/dashboard" replace />}
+//         />
+
+//         <Route
+//           path="dashboard"
+//           element={<AdminDashboard />}
+//         />
+//       </Route>
+
+//       {/* ============== PUBLIC WEBSITE ============== */}
+
+//       <Route element={<PublicLayout />}>
+//         <Route path="/" element={<HomePage />} />
+
+//         <Route path="/about" element={<AboutPage />} />
+
+//         <Route
+//           path="/services/:slug"
+//           element={<ServiceDetailPage />}
+//         />
+
+//         <Route path="/product" element={<ProductPage />} />
+
+//         {/* Future Routes
+
+//         <Route path="/projects" element={<ComingSoonPage />} />
+
+//         <Route path="/blog" element={<ComingSoonPage />} />
+//         <Route path="/blog/:slug" element={<ComingSoonPage />} />
+
+//         <Route path="/gallery" element={<ComingSoonPage />} />
+
+//         */}
+
+//         <Route path="/contact" element={<ContactPage />} />
+
+//         <Route
+//           path="/privacy-policy"
+//           element={<PrivacyPolicyPage />}
+//         />
+
+//         <Route
+//           path="/terms-and-conditions"
+//           element={<TermsConditionsPage />}
+//         />
+
+//         <Route path="*" element={<ComingSoonPage />} />
+//       </Route>
 //     </Routes>
 //   );
 // }

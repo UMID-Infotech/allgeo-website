@@ -1,0 +1,129 @@
+﻿ALLGEO SOLUTIONS PROJECT STRUCTURE
+Generated: 09/22/2026 20:08:19
+
+|-- public
+|   |-- favicon.svg
+|   +-- icons.svg
+|-- server
+|   |-- config
+|   |   |-- db.js
+|   |   +-- mailer.js
+|   |-- controllers
+|   |   |-- adminAuthController.js
+|   |   +-- enquiryController.js
+|   |-- middleware
+|   |   +-- adminAuthMiddleware.js
+|   |-- models
+|   |   +-- Admin.js
+|   |-- routes
+|   |   |-- adminAuthRoutes.js
+|   |   +-- enquiryRoutes.js
+|   +-- server.js
+|-- src
+|   |-- assets
+|   |   |-- brand
+|   |   |   +-- allgeo-logo.png
+|   |   +-- home
+|   |-- components
+|   |   |-- about
+|   |   |   |-- AboutCapabilities.jsx
+|   |   |   |-- AboutClosing.jsx
+|   |   |   |-- AboutHero.jsx
+|   |   |   |-- AllGeoAtGlance.jsx
+|   |   |   |-- FieldToInsight.jsx
+|   |   |   |-- MissionVision.jsx
+|   |   |   |-- WhatDefinesAllGeo.jsx
+|   |   |   +-- WhoWeAre.jsx
+|   |   |-- admin
+|   |   |   |-- AdminHeader.jsx
+|   |   |   |-- AdminSidebar.jsx
+|   |   |   |-- AdminTopbar.jsx
+|   |   |   +-- ProtectedAdminRoute.jsx
+|   |   |-- common
+|   |   |-- contact
+|   |   |   +-- ContactHero.jsx
+|   |   |-- home
+|   |   |   |-- across-india.jsx
+|   |   |   |-- CTASection.jsx
+|   |   |   |-- HeroSection.jsx
+|   |   |   |-- IndustriesSection.jsx
+|   |   |   |-- ProductsSection.jsx
+|   |   |   |-- ServicesSection.jsx
+|   |   |   |-- temtechno.jsx
+|   |   |   +-- WhyAllGeoSection.jsx
+|   |   |-- layout
+|   |   |   |-- Footer.jsx
+|   |   |   |-- Header.jsx
+|   |   |   +-- PublicLayout.jsx
+|   |   |-- legal
+|   |   |   +-- LegalPageLayout.jsx
+|   |   |-- products
+|   |   |   |-- ProductAttribution.jsx
+|   |   |   |-- ProductHero.jsx
+|   |   |   +-- ProductShowcase.jsx
+|   |   |-- services
+|   |   |   |-- OtherServices.jsx
+|   |   |   |-- ServiceAccordion.jsx
+|   |   |   |-- ServiceCTA.jsx
+|   |   |   |-- ServiceHero.jsx
+|   |   |   |-- ServiceOverview.jsx
+|   |   |   +-- ServiceProcess.jsx
+|   |   +-- ui
+|   |       |-- avatar.jsx
+|   |       |-- badge.jsx
+|   |       |-- button.jsx
+|   |       |-- card.jsx
+|   |       |-- dropdown-menu.jsx
+|   |       |-- input.jsx
+|   |       |-- label.jsx
+|   |       |-- separator.jsx
+|   |       |-- sheet.jsx
+|   |       |-- sidebar.jsx
+|   |       |-- skeleton.jsx
+|   |       +-- tooltip.jsx
+|   |-- data
+|   |   |-- footer.js
+|   |   |-- navigation.js
+|   |   |-- presence.js
+|   |   |-- products.js
+|   |   |-- serviceFaqs.js
+|   |   +-- services.js
+|   |-- hooks
+|   |   +-- use-mobile.js
+|   |-- layouts
+|   |   +-- AdminLayout.jsx
+|   |-- lib
+|   |   +-- utils.js
+|   |-- pages
+|   |   |-- admin
+|   |   |   |-- AdminDashboard.jsx
+|   |   |   +-- AdminLogin.jsx
+|   |   +-- public
+|   |       |-- AboutPage.jsx
+|   |       |-- ComingSoonPage.jsx
+|   |       |-- ContactPage.jsx
+|   |       |-- HomePage.jsx
+|   |       |-- PrivacyPolicyPage.jsx
+|   |       |-- ProductPage.jsx
+|   |       |-- ServiceDetailPage.jsx
+|   |       +-- TermsConditionsPage.jsx
+|   |-- routes
+|   |   +-- AppRoutes.jsx
+|   |-- services
+|   |   |-- adminAuthService.js
+|   |   +-- enquiryService.js
+|   |-- App.jsx
+|   |-- index.css
+|   +-- main.jsx
+|-- .env
+|-- .env.example
+|-- .gitignore
+|-- components.json
+|-- eslint.config.js
+|-- index.html
+|-- jsconfig.json
+|-- package.json
+|-- package-lock.json
+|-- project-structure.txt
+|-- README.md
++-- vite.config.js
