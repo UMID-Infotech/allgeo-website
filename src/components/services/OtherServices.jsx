@@ -1,10 +1,37 @@
+import { useEffect, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
-import services from "../../data/services.js";
+import { getAllServices } from "../../services/servicesRelatedService";
 
 function OtherServices({ currentServiceSlug }) {
   const imageKitEndpoint = import.meta.env.VITE_IMAGEKIT_URL_ENDPOINT;
+
+  const [services, setServices] = useState([]);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadServices = async () => {
+      try {
+        const data = await getAllServices();
+
+        if (isMounted) {
+          setServices(data);
+        }
+      } catch {
+        if (isMounted) {
+          setServices([]);
+        }
+      }
+    };
+
+    loadServices();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const otherServices = services.filter(
     (service) => service.slug !== currentServiceSlug,
@@ -59,7 +86,7 @@ function OtherServices({ currentServiceSlug }) {
 
             return (
               <Link
-                key={service.id}
+                key={service._id ?? service.slug}
                 to={`/services/${service.slug}`}
                 className="group overflow-hidden rounded-2xl border border-[var(--color-border)] bg-white shadow-[0_8px_30px_rgba(8,45,87,0.05)] transition-all duration-300 hover:-translate-y-1 hover:border-[var(--color-green)]/30 hover:shadow-[0_16px_40px_rgba(8,45,87,0.1)]"
               >
