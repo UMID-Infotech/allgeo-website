@@ -1,8 +1,9 @@
+import { useEffect, useState } from "react";
 import { ArrowUpRight, Globe2, Mail, MapPin, Phone } from "lucide-react";
 
-import services from "../../data/services.js";
 import products from "../../data/products.js";
 import footerData from "../../data/footer.js";
+import { getAllServices } from "../../services/servicesRelatedService.js";
 
 function FooterLink({ href, children }) {
   return (
@@ -28,6 +29,33 @@ function Footer() {
   const imageKitEndpoint = import.meta.env.VITE_IMAGEKIT_URL_ENDPOINT;
 
   const footerLogo = `${imageKitEndpoint}/allgeo-solutions/home/AGS-white-logo.png`;
+
+  const [services, setServices] = useState([]);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadServices = async () => {
+      try {
+        const data = await getAllServices();
+
+        if (isMounted) {
+          setServices(data);
+        }
+      } catch {
+        if (isMounted) {
+          setServices([]);
+        }
+      }
+    };
+
+    loadServices();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   return (
     <footer className="relative min-h-screen overflow-hidden bg-[var(--color-navy)] text-white">
       {/* Scientific background */}
@@ -204,7 +232,10 @@ function Footer() {
 
             <div className="mt-5 flex flex-col items-start gap-3.5">
               {services.map((service) => (
-                <FooterLink key={service.id} href={`/services/${service.slug}`}>
+                <FooterLink
+                  key={service._id ?? service.slug}
+                  href={`/services/${service.slug}`}
+                >
                   {service.title}
                 </FooterLink>
               ))}

@@ -1,14 +1,12 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 
-import serviceFaqs from "../../data/serviceFaqs.js";
-
-function ServiceAccordion({ service }) {
+function ServiceAccordion({ service, items }) {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const imageKitEndpoint = import.meta.env.VITE_IMAGEKIT_URL_ENDPOINT;
 
-  const accordionItems = serviceFaqs[service?.slug] ?? [];
+  const accordionItems = items ?? [];
 
   // If this service has no accordion data,
   // don't render the complete section.
@@ -72,7 +70,7 @@ function ServiceAccordion({ service }) {
 
             return (
               <article
-                key={item.id}
+                key={item._id ?? item.faqId}
                 className={`overflow-hidden rounded-2xl border bg-white transition-all duration-300 ${
                   isOpen
                     ? "border-[var(--color-green)]/30 shadow-[0_16px_45px_rgba(8,45,87,0.08)]"
@@ -84,7 +82,7 @@ function ServiceAccordion({ service }) {
                   type="button"
                   onClick={() => handleToggle(index)}
                   aria-expanded={isOpen}
-                  aria-controls={`service-accordion-${item.id}`}
+                  aria-controls={`service-accordion-${item.faqId}`}
                   className="group flex w-full items-center gap-4 px-5 py-5 text-left sm:px-7 sm:py-6"
                 >
                   {/* Number */}
@@ -124,7 +122,7 @@ function ServiceAccordion({ service }) {
                 {/* Accordion body */}
                 {isOpen && (
                   <div
-                    id={`service-accordion-${item.id}`}
+                    id={`service-accordion-${item.faqId}`}
                     className="border-t border-[var(--color-border)]"
                   >
                     <div
@@ -154,7 +152,7 @@ function ServiceAccordion({ service }) {
                         >
                           {item.images.map((image, imageIndex) => (
                             <div
-                              key={`${item.id}-image-${imageIndex}`}
+                              key={`${item.faqId}-image-${imageIndex}`}
                               className={`overflow-hidden rounded-xl border border-[var(--color-border)] bg-white ${
                                 item.images.length === 3 && imageIndex === 0
                                   ? "col-span-2"

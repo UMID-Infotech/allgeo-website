@@ -15,6 +15,7 @@ import AdminLayout from "../layouts/AdminLayout";
 import AdminLogin from "../pages/admin/AdminLogin";
 import AdminDashboard from "../pages/admin/AdminDashboard";
 import ProtectedAdminRoute from "../components/admin/ProtectedAdminRoute";
+import AdminServices from "@/pages/admin/AdminServices";
 
 function AppRoutes() {
   return (
@@ -47,6 +48,7 @@ function AppRoutes() {
             path="dashboard"
             element={<AdminDashboard />}
           />
+        <Route path="services" element={<AdminServices />} />
         </Route>
       </Route>
 
