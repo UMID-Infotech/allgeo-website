@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, RefreshCcw } from "lucide-react";
 import { getAllServices } from "../../services/servicesRelatedService";
 
 function ServicesSection() {
@@ -12,32 +12,49 @@ function ServicesSection() {
 
   const imageKitEndpoint = import.meta.env.VITE_IMAGEKIT_URL_ENDPOINT;
 
+  const isMountedRef = useRef(true);
+
+  const fetchServices = (attempt = 0) => {
+    getAllServices()
+      .then((data) => {
+        if (!isMountedRef.current) return;
+        setServices(data);
+        setError(null);
+        setIsLoading(false);
+      })
+      .catch((fetchError) => {
+        if (!isMountedRef.current) return;
+
+        // One silent automatic retry — smooths over a transient
+        // network blip instead of immediately showing an error.
+        if (attempt < 1) {
+          setTimeout(() => {
+            if (isMountedRef.current) {
+              fetchServices(attempt + 1);
+            }
+          }, 1000);
+          return;
+        }
+
+        setError(fetchError.message || "Unable to load services.");
+        setIsLoading(false);
+      });
+  };
+
+  const handleRetry = () => {
+    setIsLoading(true);
+    setError(null);
+    fetchServices(0);
+  };
+
   useEffect(() => {
-    let isMounted = true;
-
-    const loadServices = async () => {
-      try {
-        const data = await getAllServices();
-
-        if (isMounted) {
-          setServices(data);
-        }
-      } catch (fetchError) {
-        if (isMounted) {
-          setError(fetchError.message);
-        }
-      } finally {
-        if (isMounted) {
-          setIsLoading(false);
-        }
-      }
-    };
-
-    loadServices();
+    isMountedRef.current = true;
+    fetchServices(0);
 
     return () => {
-      isMounted = false;
+      isMountedRef.current = false;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -101,28 +118,51 @@ function ServicesSection() {
             </h2>
           </div>
 
-          <p className="max-w-md text-sm leading-6 text-[var(--color-text-muted)] sm:text-base lg:justify-self-end">
+          {/* <p className="max-w-md text-sm leading-6 text-[var(--color-text-muted)] sm:text-base lg:justify-self-end">
             End-to-end services from exploration to execution, tailored to your
             project needs.
-          </p>
+          </p> */}
         </div>
 
-        {/* Loading / error states */}
+        {/* Loading skeleton — keeps the layout stable while fetching */}
         {isLoading && (
-          <p className="mt-10 text-sm text-[var(--color-text-muted)]">
-            Loading services…
-          </p>
+          <div className="mt-10 flex flex-wrap justify-center gap-5">
+            {[0, 1, 2].map((placeholder) => (
+              <div
+                key={placeholder}
+                className="w-full animate-pulse overflow-hidden rounded-2xl border border-[var(--color-border)] bg-white md:w-[calc(50%-10px)] lg:w-[calc(33.3333%-13.34px)]"
+              >
+                <div className="aspect-[16/9] w-full bg-slate-200" />
+                <div className="space-y-3 p-5 sm:p-6">
+                  <div className="h-4 w-2/3 rounded bg-slate-200" />
+                  <div className="h-3 w-full rounded bg-slate-100" />
+                  <div className="h-3 w-5/6 rounded bg-slate-100" />
+                </div>
+              </div>
+            ))}
+          </div>
         )}
 
+        {/* Error state */}
         {!isLoading && error && (
-          <p className="mt-10 text-sm text-red-600">
-            Unable to load services right now.
-          </p>
+          <div className="mt-10 flex flex-col items-center gap-3 rounded-2xl border border-dashed border-[var(--color-border)] py-10 text-center">
+            <p className="text-sm text-red-600">{error}</p>
+
+            <button
+              type="button"
+              onClick={handleRetry}
+              className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] px-4 py-2 text-sm font-semibold text-[var(--color-navy)] transition-colors duration-200 hover:border-[var(--color-green)] hover:text-[var(--color-green)]"
+            >
+              <RefreshCcw aria-hidden="true" className="h-4 w-4" />
+              Retry
+            </button>
+          </div>
         )}
 
-        {/* Services grid */}
+        {/* Services — flex-wrap centers any incomplete last row,
+            regardless of how many services there are. */}
         {!isLoading && !error && (
-          <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-6">
+          <div className="mt-10 flex flex-wrap justify-center gap-5">
             {services.map((service, index) => {
               const serviceUrl = `/services/${service.slug}`;
               const imageUrl = `${imageKitEndpoint}${service.image}`;
@@ -130,9 +170,7 @@ function ServicesSection() {
               return (
                 <article
                   key={service._id ?? service.slug}
-                  className={`group overflow-hidden rounded-2xl border border-[var(--color-border)] bg-white shadow-[0_8px_30px_rgba(8,45,87,0.05)] transition-all duration-500 ease-out motion-reduce:transform-none motion-reduce:opacity-100 motion-reduce:transition-none hover:-translate-y-1 hover:shadow-[0_16px_38px_rgba(8,45,87,0.10)] md:col-span-1 lg:col-span-2 ${
-                    index === 3 ? "lg:col-start-2" : ""
-                  } ${
+                  className={`group w-full overflow-hidden rounded-2xl border border-[var(--color-border)] bg-white shadow-[0_8px_30px_rgba(8,45,87,0.05)] transition-all duration-500 ease-out motion-reduce:transform-none motion-reduce:opacity-100 motion-reduce:transition-none hover:-translate-y-1 hover:shadow-[0_16px_38px_rgba(8,45,87,0.10)] md:w-[calc(50%-10px)] lg:w-[calc(33.3333%-13.34px)] ${
                     isVisible
                       ? "translate-y-0 opacity-100"
                       : "translate-y-6 opacity-0"
