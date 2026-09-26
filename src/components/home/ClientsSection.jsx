@@ -1,8 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import clients from "../../data/clients.json";
-
-const sliderItems = [...clients, ...clients];
+import { getAllClients } from "../../services/clientService";
 
 function ClientItem({ client, onPreview, onClose }) {
   const handlePointerEnter = (event) => {
@@ -49,9 +47,36 @@ function ClientItem({ client, onPreview, onClose }) {
 }
 
 function ClientsSection() {
+  const [clients, setClients] = useState([]);
   const [preview, setPreview] = useState(null);
 
+  useEffect(() => {
+    let isMounted = true;
+
+    async function fetchClients() {
+      try {
+        const data = await getAllClients();
+        if (isMounted) {
+          setClients(Array.isArray(data) ? data : []);
+        }
+      } catch (error) {
+        console.error("Failed to load clients:", error.message);
+        if (isMounted) {
+          setClients([]);
+        }
+      }
+    }
+
+    fetchClients();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   if (clients.length === 0) return null;
+
+  const sliderItems = [...clients, ...clients];
 
   return (
     <section className="allgeo-clients-section" aria-label="Our clients">
@@ -65,7 +90,7 @@ function ClientsSection() {
           <div className="allgeo-clients-group">
             {sliderItems.map((client, index) => (
               <ClientItem
-                key={`first-${index}`}
+                key={`first-${client._id ?? index}`}
                 client={client}
                 onPreview={setPreview}
                 onClose={() => setPreview(null)}
@@ -76,7 +101,7 @@ function ClientsSection() {
           <div className="allgeo-clients-group" aria-hidden="true">
             {sliderItems.map((client, index) => (
               <ClientItem
-                key={`second-${index}`}
+                key={`second-${client._id ?? index}`}
                 client={client}
                 onPreview={setPreview}
                 onClose={() => setPreview(null)}

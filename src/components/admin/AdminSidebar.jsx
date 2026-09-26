@@ -3,6 +3,7 @@ import {
   Mail,
   Package,
   Settings,
+  Users,
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
@@ -21,6 +22,11 @@ const menuItems = [
     title: "Services",
     path: "/admin/services",
     icon: Settings,
+  },
+  {
+    title: "Clients",
+    path: "/admin/clients",
+    icon: Users,
   },
   {
     title: "Products",
@@ -55,8 +61,8 @@ function AdminSidebar() {
               className={({ isActive }) =>
                 `flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors ${
                   isActive
-                    ? "bg-white text-slate-950"
-                    : "text-slate-300 hover:bg-slate-900 hover:text-white"
+                    ? "bg-white text-slate-950! [&_svg]:text-slate-950!"
+                    : "text-slate-300! hover:bg-slate-900 hover:text-white!"
                 }`
               }
             >
