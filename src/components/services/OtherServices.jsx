@@ -5,7 +5,8 @@ import { Link } from "react-router-dom";
 import { getAllServices } from "../../services/servicesRelatedService";
 
 function OtherServices({ currentServiceSlug }) {
-  const imageKitEndpoint = import.meta.env.VITE_IMAGEKIT_URL_ENDPOINT;
+  const imageKitEndpoint =
+    import.meta.env.VITE_IMAGEKIT_URL_ENDPOINT?.replace(/\/$/, "") ?? "";
 
   const [services, setServices] = useState([]);
 
@@ -34,7 +35,7 @@ function OtherServices({ currentServiceSlug }) {
   }, []);
 
   const otherServices = services.filter(
-    (service) => service.slug !== currentServiceSlug,
+    (service) => service.slug !== currentServiceSlug
   );
 
   if (otherServices.length === 0) {
@@ -43,23 +44,23 @@ function OtherServices({ currentServiceSlug }) {
 
   return (
     <section className="relative overflow-hidden bg-white">
-      {/* Scientific background */}
       <div
         className="scientific-grid absolute inset-0 opacity-[0.025]"
         aria-hidden="true"
       />
 
-      {/* Decorative glow */}
       <div
         className="absolute -right-40 top-1/2 h-96 w-96 -translate-y-1/2 rounded-full bg-[var(--color-green)]/5 blur-3xl"
         aria-hidden="true"
       />
 
       <div className="site-container section-spacing relative">
-        {/* Section heading */}
         <div className="mb-10 max-w-3xl sm:mb-12 lg:mb-14">
           <div className="flex items-center gap-3">
-            <span className="h-px w-9 bg-[var(--color-green)]" />
+            <span
+              className="h-px w-9 bg-[var(--color-green)]"
+              aria-hidden="true"
+            />
 
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-green)] sm:text-sm">
               Explore More
@@ -77,11 +78,14 @@ function OtherServices({ currentServiceSlug }) {
           </p>
         </div>
 
-        {/* Service cards */}
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {otherServices.map((service) => {
-            const serviceImage = service.image
-              ? `${imageKitEndpoint}${service.image}`
+            const imagePath = service.image;
+
+            const serviceImage = imagePath
+              ? /^https?:\/\//i.test(imagePath)
+                ? imagePath
+                : `${imageKitEndpoint}${imagePath.startsWith("/") ? "" : "/"}${imagePath}`
               : null;
 
             return (
@@ -90,24 +94,28 @@ function OtherServices({ currentServiceSlug }) {
                 to={`/services/${service.slug}`}
                 className="group overflow-hidden rounded-2xl border border-[var(--color-border)] bg-white shadow-[0_8px_30px_rgba(8,45,87,0.05)] transition-all duration-300 hover:-translate-y-1 hover:border-[var(--color-green)]/30 hover:shadow-[0_16px_40px_rgba(8,45,87,0.1)]"
               >
-                {/* Image */}
                 {serviceImage && (
                   <div className="relative aspect-[16/10] overflow-hidden bg-[var(--color-background-blue)]">
                     <img
                       src={serviceImage}
                       alt={service.title}
                       loading="lazy"
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      className="absolute inset-0 max-w-none transition-transform duration-500 group-hover:scale-105"
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        objectPosition: "center",
+                      }}
                     />
 
                     <div
-                      className="absolute inset-0 bg-gradient-to-t from-[rgba(5,35,66,0.35)] via-transparent to-transparent"
+                      className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[rgba(5,35,66,0.35)] via-transparent to-transparent"
                       aria-hidden="true"
                     />
                   </div>
                 )}
 
-                {/* Content */}
                 <div className="flex min-h-[210px] flex-col p-5 sm:p-6">
                   <h3 className="text-lg font-bold leading-snug text-[var(--color-navy)] transition-colors duration-300 group-hover:text-[var(--color-green-dark)]">
                     {service.title}

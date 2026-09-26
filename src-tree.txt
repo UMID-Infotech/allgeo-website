@@ -1,0 +1,99 @@
+﻿src/
+├── assets/
+│   ├── brand/
+│   │   └── allgeo-logo.png
+│   └── home/
+├── components/
+│   ├── about/
+│   │   ├── AboutCapabilities.jsx
+│   │   ├── AboutClosing.jsx
+│   │   ├── AboutHero.jsx
+│   │   ├── AllGeoAtGlance.jsx
+│   │   ├── FieldToInsight.jsx
+│   │   ├── MissionVision.jsx
+│   │   ├── WhatDefinesAllGeo.jsx
+│   │   └── WhoWeAre.jsx
+│   ├── admin/
+│   │   ├── AdminHeader.jsx
+│   │   ├── AdminSidebar.jsx
+│   │   ├── AdminTopbar.jsx
+│   │   ├── ProtectedAdminRoute.jsx
+│   │   ├── ServiceEditForm.jsx
+│   │   └── ServiceFormTwoStage.jsx
+│   ├── common/
+│   ├── contact/
+│   │   └── ContactHero.jsx
+│   ├── home/
+│   │   ├── across-india.jsx
+│   │   ├── CTASection.jsx
+│   │   ├── HeroSection.jsx
+│   │   ├── IndustriesSection.jsx
+│   │   ├── ProductsSection.jsx
+│   │   ├── ServicesSection.jsx
+│   │   ├── temtechno.jsx
+│   │   └── WhyAllGeoSection.jsx
+│   ├── layout/
+│   │   ├── Footer.jsx
+│   │   ├── Header.jsx
+│   │   └── PublicLayout.jsx
+│   ├── legal/
+│   │   └── LegalPageLayout.jsx
+│   ├── products/
+│   │   ├── ProductAttribution.jsx
+│   │   ├── ProductHero.jsx
+│   │   └── ProductShowcase.jsx
+│   ├── services/
+│   │   ├── OtherServices.jsx
+│   │   ├── ServiceAccordion.jsx
+│   │   ├── ServiceCTA.jsx
+│   │   ├── ServiceHero.jsx
+│   │   ├── ServiceOverview.jsx
+│   │   └── ServiceProcess.jsx
+│   └── ui/
+│       ├── avatar.jsx
+│       ├── badge.jsx
+│       ├── button.jsx
+│       ├── card.jsx
+│       ├── dropdown-menu.jsx
+│       ├── input.jsx
+│       ├── label.jsx
+│       ├── separator.jsx
+│       ├── sheet.jsx
+│       ├── sidebar.jsx
+│       ├── skeleton.jsx
+│       └── tooltip.jsx
+├── data/
+│   ├── footer.js
+│   ├── navigation.js
+│   ├── presence.js
+│   └── products.js
+├── hooks/
+│   └── use-mobile.js
+├── layouts/
+│   └── AdminLayout.jsx
+├── lib/
+│   └── utils.js
+├── pages/
+│   ├── admin/
+│   │   ├── AdminDashboard.jsx
+│   │   ├── AdminLogin.jsx
+│   │   └── AdminServices.jsx
+│   └── public/
+│       ├── AboutPage.jsx
+│       ├── ComingSoonPage.jsx
+│       ├── ContactPage.jsx
+│       ├── HomePage.jsx
+│       ├── PrivacyPolicyPage.jsx
+│       ├── ProductPage.jsx
+│       ├── ServiceDetailPage.jsx
+│       └── TermsConditionsPage.jsx
+├── routes/
+│   └── AppRoutes.jsx
+├── services/
+│   ├── adminAuthService.js
+│   ├── api.js
+│   ├── enquiryService.js
+│   └── servicesRelatedService.js
+├── App.jsx
+├── index.css
+└── main.jsx

@@ -1,0 +1,22 @@
+﻿server/
+├── config/
+│   ├── db.js
+│   └── mailer.js
+├── controllers/
+│   ├── adminAuthController.js
+│   ├── enquiryController.js
+│   └── serviceController.js
+├── middleware/
+│   └── adminAuthMiddleware.js
+├── models/
+│   ├── Admin.js
+│   ├── Service.js
+│   └── ServiceFaq.js
+├── routes/
+│   ├── adminAuthRoutes.js
+│   ├── enquiryRoutes.js
+│   └── serviceRoutes.js
+├── seed/
+│   ├── seedAdmin.js
+│   └── seedServices.js
+└── server.js
