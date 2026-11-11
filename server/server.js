@@ -1,5 +1,8 @@
-//server/server.js
 import "dotenv/config";
+
+import { existsSync } from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 import cookieParser from "cookie-parser";
 import cors from "cors";
@@ -13,12 +16,18 @@ import serviceRoutes from "./routes/serviceRoutes.js";
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-    credentials: true,
-  })
-);
+const serverDir = path.dirname(fileURLToPath(import.meta.url));
+const distPath = path.resolve(serverDir, "../dist");
+const indexPath = path.join(distPath, "index.html");
+
+if (process.env.NODE_ENV !== "production") {
+  app.use(
+    cors({
+      origin: "http://localhost:5173",
+      credentials: true,
+    }),
+  );
+}
 
 app.use(express.json());
 app.use(cookieParser());
@@ -34,11 +43,23 @@ app.use("/api/admin/auth", adminAuthRoutes);
 app.use("/api/enquiries", enquiryRoutes);
 app.use("/api/services", serviceRoutes);
 
+if (existsSync(indexPath)) {
+  app.use(express.static(distPath));
+
+  app.use((req, res, next) => {
+    if (req.method !== "GET" || req.path.startsWith("/api/")) {
+      return next();
+    }
+
+    return res.sendFile(indexPath);
+  });
+}
+
 const startServer = async () => {
   await connectDB();
 
   app.listen(PORT, () => {
-    console.log(`AllGeo API running on port ${PORT}`);
+    console.log(`AllGeo app running on port ${PORT}`);
   });
 };
 
