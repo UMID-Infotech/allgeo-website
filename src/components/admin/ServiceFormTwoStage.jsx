@@ -101,7 +101,6 @@ function ServiceFormTwoStage({ onCancel, onSaved }) {
       const createdService = await createService(serviceForm);
 
       for (const item of faqItems) {
-        // eslint-disable-next-line no-await-in-loop
         await addServiceFaq(createdService.slug, {
           faqId: item.faqId,
           title: item.title,

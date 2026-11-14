@@ -27,6 +27,12 @@ export default defineConfig([
     },
   },
 
+  // UI primitives export styling helpers alongside components.
+  {
+    files: ["src/components/ui/**/*.jsx"],
+    rules: { "react-refresh/only-export-components": "off" },
+  },
+
   // Node / Express backend
   {
     files: ["server/**/*.js"],

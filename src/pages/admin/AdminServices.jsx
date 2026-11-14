@@ -104,7 +104,7 @@ function AdminServices() {
     setEditingService(service);
   };
 
-  const handleEditSaved = (updatedService) => {
+  const handleEditSaved = () => {
     setEditingService(null);
 
     // Clear any cached detail data for the old slug so a re-open refetches

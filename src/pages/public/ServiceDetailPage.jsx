@@ -12,32 +12,21 @@ import { getServiceBySlug } from "../../services/servicesRelatedService";
 function ServiceDetailPage() {
   const { slug } = useParams();
 
-  const [service, setService] = useState(null);
-  const [faqs, setFaqs] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [notFound, setNotFound] = useState(false);
+  const [result, setResult] = useState({ slug: null, service: null, faqs: [], notFound: false });
 
   useEffect(() => {
     let isMounted = true;
-
-    setIsLoading(true);
-    setNotFound(false);
 
     const loadService = async () => {
       try {
         const data = await getServiceBySlug(slug);
 
         if (isMounted) {
-          setService(data.service);
-          setFaqs(data.faqs);
+          setResult({ slug, service: data.service, faqs: data.faqs, notFound: false });
         }
       } catch {
         if (isMounted) {
-          setNotFound(true);
-        }
-      } finally {
-        if (isMounted) {
-          setIsLoading(false);
+          setResult({ slug, service: null, faqs: [], notFound: true });
         }
       }
     };
@@ -48,6 +37,9 @@ function ServiceDetailPage() {
       isMounted = false;
     };
   }, [slug]);
+
+  const isLoading = result.slug !== slug;
+  const { service, faqs, notFound } = result;
 
   if (!isLoading && (notFound || !service)) {
     return <Navigate to="/" replace />;
