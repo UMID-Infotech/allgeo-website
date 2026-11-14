@@ -14,6 +14,7 @@ import TermsConditionsPage from "../pages/public/TermsConditionsPage";
 import AdminLayout from "../layouts/AdminLayout";
 import AdminLogin from "../pages/admin/AdminLogin";
 import AdminDashboard from "../pages/admin/AdminDashboard";
+import AdminEnquiries from "../pages/admin/AdminEnquiries";
 import ProtectedAdminRoute from "../components/admin/ProtectedAdminRoute";
 import AdminServices from "@/pages/admin/AdminServices";
 
@@ -49,6 +50,7 @@ function AppRoutes() {
             element={<AdminDashboard />}
           />
         <Route path="services" element={<AdminServices />} />
+        <Route path="enquiries" element={<AdminEnquiries />} />
         </Route>
       </Route>
 
