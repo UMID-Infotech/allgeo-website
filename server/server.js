@@ -45,6 +45,14 @@ app.use("/api/clients", clientRoutes);
 app.use("/api/enquiries", enquiryRoutes);
 app.use("/api/services", serviceRoutes);
 
+// Unknown /api routes return a clear JSON 404 (helps spot missing routes).
+app.use("/api", (req, res) => {
+  res.status(404).json({
+    success: false,
+    message: `API route not found: ${req.method} ${req.originalUrl}`,
+  });
+});
+
 if (existsSync(indexPath)) {
   app.use(express.static(distPath));
 
@@ -60,8 +68,21 @@ if (existsSync(indexPath)) {
 const startServer = async () => {
   await connectDB();
 
-  app.listen(PORT, () => {
+  const server = app.listen(PORT, () => {
     console.log(`AllGeo app running on port ${PORT}`);
+  });
+
+  // If an old server process is still holding the port, say so clearly
+  // instead of silently serving stale routes.
+  server.on("error", (error) => {
+    if (error.code === "EADDRINUSE") {
+      console.error(
+        `Port ${PORT} is already in use by another process. Stop the old server and start again.`,
+      );
+    } else {
+      console.error("Server error:", error);
+    }
+    process.exit(1);
   });
 };
 

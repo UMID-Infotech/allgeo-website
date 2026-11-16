@@ -19,7 +19,6 @@ import ProtectedAdminRoute from "../components/admin/ProtectedAdminRoute";
 import AdminServices from "@/pages/admin/AdminServices";
 import AdminClients from "@/pages/admin/AdminClients";
 import AdminClientAdd from "@/pages/admin/AdminClientAdd";
-import AdminEnquiries from "@/pages/admin/AdminEnquiries";
 
 function AppRoutes() {
   return (
@@ -53,11 +52,8 @@ function AppRoutes() {
             element={<AdminDashboard />}
           />
         <Route path="services" element={<AdminServices />} />
-<<<<<<< HEAD
-=======
         <Route path="clients" element={<AdminClients />} />
         <Route path="clients/add" element={<AdminClientAdd />} />
->>>>>>> 6fb0d21 (enquiry form is connected to admin dashboard, email is integrated, clients page's json data removed, created the modle for client and imported in database and in admin dashboard admin can add these clients, and the image stores in imagekit)
         <Route path="enquiries" element={<AdminEnquiries />} />
         </Route>
       </Route>

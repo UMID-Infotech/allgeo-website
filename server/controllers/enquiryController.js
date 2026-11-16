@@ -1,144 +1,101 @@
-<<<<<<< HEAD
-import { randomUUID } from "node:crypto";
-import { pool } from "../config/db.js";
-import transporter from "../config/mailer.js";
+/* server/controllers/enquiryController.js */
 
-const escapeHtml = (value) => value.replace(/[&<>"']/g, (char) => ({
-  "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
-})[char]);
+import mongoose from "mongoose";
 
-=======
 import Enquiry from "../models/Enquiry.js";
 import transporter from "../config/mailer.js";
 
 // POST /api/enquiries
-// Public — used by the CTASection enquiry form on the website.
-// Saves the enquiry in the database AND emails the admin (MAIL_TO).
->>>>>>> 6fb0d21 (enquiry form is connected to admin dashboard, email is integrated, clients page's json data removed, created the modle for client and imported in database and in admin dashboard admin can add these clients, and the image stores in imagekit)
+// Public — used by the website's contact/enquiry form.
 export async function submitEnquiry(req, res) {
-  const { name, email, contactNumber, message } = req.body ?? {};
-  const fields = [name, email, contactNumber, message];
-  if (fields.some((field) => typeof field !== "string" || !field.trim())) {
-    return res.status(400).json({ success: false, message: "All fields are required." });
-  }
-
-  const enquiry = {
-    id: randomUUID(),
-    name: name.trim(),
-    email: email.trim(),
-    contactNumber: contactNumber.trim(),
-    message: message.trim(),
-  };
-  if (enquiry.name.length > 150 || enquiry.email.length > 254 ||
-      enquiry.contactNumber.length > 50 || enquiry.message.length > 10000 ||
-      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(enquiry.email)) {
-    return res.status(400).json({ success: false, message: "Please check your enquiry details." });
-  }
-
   try {
-    await pool.query(
-      `INSERT INTO enquiries (id, name, email, contact_number, message)
-       VALUES ($1, $2, $3, $4, $5)`,
-      [enquiry.id, enquiry.name, enquiry.email, enquiry.contactNumber, enquiry.message],
-    );
-  } catch (error) {
-    console.error("Enquiry save error:", error);
-    return res.status(500).json({ success: false, message: "Unable to save enquiry. Please try again." });
-  }
+    const { name, email, contactNumber, message } = req.body;
 
-<<<<<<< HEAD
-  // Email is best effort. A mail failure cannot reject or lose a saved enquiry.
-  if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS &&
-      process.env.MAIL_FROM && process.env.MAIL_TO) {
-=======
-    // 1. Save the enquiry to the database first, so it shows up in the
-    // admin dashboard even if the email fails to send for some reason.
+    if (!name || !email || !contactNumber || !message) {
+      return res.status(400).json({
+        success: false,
+        message: "All fields are required.",
+      });
+    }
+
+    // 1. Save enquiry in MongoDB
     const enquiry = await Enquiry.create({
-      name,
-      email,
-      contactNumber,
-      message,
+      name: name.trim(),
+      email: email.trim().toLowerCase(),
+      contactNumber: contactNumber.trim(),
+      message: message.trim(),
     });
 
-    // 2. Email the admin (process.env.MAIL_TO is the admin's email address).
->>>>>>> 6fb0d21 (enquiry form is connected to admin dashboard, email is integrated, clients page's json data removed, created the modle for client and imported in database and in admin dashboard admin can add these clients, and the image stores in imagekit)
-    const mailOptions = {
-      from: `"AllGeo Website" <${process.env.MAIL_FROM}>`,
-      to: process.env.MAIL_TO,
-      replyTo: enquiry.email,
-      subject: `${enquiry.name.replace(/[\r\n]/g, " ")} inquired for AllGeo Services`,
-      text: `New enquiry received from AllGeo Solutions website.\n\nName: ${enquiry.name}\nEmail: ${enquiry.email}\nContact Number: ${enquiry.contactNumber}\n\nMessage:\n${enquiry.message}`,
-      html: `<div style="font-family:Arial,sans-serif;line-height:1.6"><h2>New Website Enquiry</h2><p><strong>Name:</strong> ${escapeHtml(enquiry.name)}</p><p><strong>Email:</strong> ${escapeHtml(enquiry.email)}</p><p><strong>Contact Number:</strong> ${escapeHtml(enquiry.contactNumber)}</p><p><strong>Message:</strong></p><p>${escapeHtml(enquiry.message).replace(/\n/g, "<br>")}</p></div>`,
-    };
-<<<<<<< HEAD
-    void transporter.sendMail(mailOptions).then(async () => {
-      await pool.query("UPDATE enquiries SET email_status = 'sent' WHERE id = $1", [enquiry.id]);
-    }).catch(async (error) => {
-      console.error("Enquiry email error:", error);
-      try {
-        await pool.query("UPDATE enquiries SET email_status = 'failed' WHERE id = $1", [enquiry.id]);
-      } catch (updateError) {
-        console.error("Enquiry email status error:", updateError);
-      }
-=======
+    // 2. Send email notification to admin
+    let emailSent = false;
 
     try {
+      const mailOptions = {
+        from: `"AllGeo Website" <${process.env.MAIL_FROM}>`,
+        to: process.env.MAIL_TO,
+        replyTo: email,
+        subject: `${name} inquired for AllGeo Services`,
+
+        text: `
+New enquiry received from AllGeo Solutions website.
+
+Name: ${name}
+Email: ${email}
+Contact Number: ${contactNumber}
+
+Message:
+${message}
+        `.trim(),
+
+        html: `
+          <div style="font-family: Arial, sans-serif; color: #1f2937; line-height: 1.6;">
+            <h2 style="color: #082d57;">New Website Enquiry</h2>
+
+            <p>A new enquiry has been received from the AllGeo Solutions website.</p>
+
+            <hr />
+
+            <p><strong>Name:</strong> ${escapeHtml(name)}</p>
+            <p><strong>Email:</strong> ${escapeHtml(email)}</p>
+            <p><strong>Contact Number:</strong> ${escapeHtml(contactNumber)}</p>
+
+            <p><strong>Message:</strong></p>
+            <p>${escapeHtml(message).replace(/\n/g, "<br>")}</p>
+
+            <hr />
+
+            <p style="font-size: 12px; color: #6b7280;">
+              Submitted through the AllGeo Solutions website.
+            </p>
+          </div>
+        `,
+      };
+
       await transporter.sendMail(mailOptions);
-    } catch (mailError) {
-      // Don't fail the request if the enquiry was saved but the email
-      // couldn't be sent — just log it so the admin can still see it
-      // in the dashboard.
-      console.error("Enquiry email error:", mailError);
+      emailSent = true;
+    } catch (emailError) {
+      console.error("Enquiry email error:", emailError);
     }
 
-    return res.status(200).json({
+    // 3. Return success because enquiry is safely saved
+    return res.status(201).json({
       success: true,
       message: "Enquiry submitted successfully.",
-      enquiry,
->>>>>>> 6fb0d21 (enquiry form is connected to admin dashboard, email is integrated, clients page's json data removed, created the modle for client and imported in database and in admin dashboard admin can add these clients, and the image stores in imagekit)
+      emailSent,
+      enquiryId: enquiry._id,
     });
-  } else {
-    void pool.query("UPDATE enquiries SET email_status = 'failed' WHERE id = $1", [enquiry.id])
-      .catch((error) => console.error("Enquiry email status error:", error));
-  }
-
-  return res.status(201).json({ success: true, message: "Thank you. Your enquiry has been received." });
-}
-
-export async function listEnquiries(req, res) {
-  try {
-    const page = Math.max(1, Number.parseInt(req.query.page, 10) || 1);
-    if (!Number.isSafeInteger(page)) {
-      return res.status(400).json({ success: false, message: "Invalid page number." });
-    }
-    const limit = 20;
-    const [{ rows }, count] = await Promise.all([
-      pool.query(
-        `SELECT id, name, email, contact_number AS "contactNumber", message,
-                email_status AS "emailStatus", created_at AS "createdAt"
-         FROM enquiries ORDER BY created_at DESC, id DESC LIMIT $1 OFFSET $2`,
-        [limit, (page - 1) * limit],
-      ),
-      pool.query("SELECT COUNT(*)::int AS total FROM enquiries"),
-    ]);
-    return res.json({ success: true, enquiries: rows, total: count.rows[0].total, page, limit });
   } catch (error) {
-<<<<<<< HEAD
-    console.error("Enquiry list error:", error);
-    return res.status(500).json({ success: false, message: "Unable to load enquiries." });
-=======
-    console.error("Submit enquiry error:", error);
+    console.error("Enquiry submission error:", error);
 
     return res.status(500).json({
       success: false,
       message: "Unable to submit enquiry. Please try again.",
     });
->>>>>>> 6fb0d21 (enquiry form is connected to admin dashboard, email is integrated, clients page's json data removed, created the modle for client and imported in database and in admin dashboard admin can add these clients, and the image stores in imagekit)
   }
 }
 
 // GET /api/enquiries
-// Admin only — list all enquiries for the admin dashboard, newest first.
+// Admin only — returns all enquiries (newest first) for /admin/enquiries.
 export async function getAllEnquiries(req, res) {
   try {
     const enquiries = await Enquiry.find({}).sort({ createdAt: -1 });
@@ -159,21 +116,44 @@ export async function getAllEnquiries(req, res) {
 }
 
 // PUT /api/enquiries/:id/follow-up
-// Admin only — update the follow-up type, connected status and remarks
-// for a specific enquiry from the admin dashboard.
+// Admin only — saves follow-up type, connected status and remarks.
+// body: { followUpType?, isConnected?, remarks? }
 export async function updateEnquiryFollowUp(req, res) {
   try {
     const { id } = req.params;
-    const { followUpType, isConnected, remarks } = req.body;
 
-    if (followUpType && !["none", "call", "email"].includes(followUpType)) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({
         success: false,
-        message: "followUpType must be one of: none, call, email.",
+        message: "Invalid enquiry id.",
       });
     }
 
-    const enquiry = await Enquiry.findById(id);
+    const { followUpType, isConnected, remarks } = req.body;
+    const updates = {};
+
+    if (followUpType !== undefined) {
+      if (!["none", "call", "email"].includes(followUpType)) {
+        return res.status(400).json({
+          success: false,
+          message: "Follow-up type must be none, call or email.",
+        });
+      }
+      updates.followUpType = followUpType;
+    }
+
+    if (isConnected !== undefined) {
+      updates.isConnected = Boolean(isConnected);
+    }
+
+    if (remarks !== undefined) {
+      updates.remarks = String(remarks).trim();
+    }
+
+    const enquiry = await Enquiry.findByIdAndUpdate(id, updates, {
+      new: true,
+      runValidators: true,
+    });
 
     if (!enquiry) {
       return res.status(404).json({
@@ -182,23 +162,9 @@ export async function updateEnquiryFollowUp(req, res) {
       });
     }
 
-    if (followUpType !== undefined) {
-      enquiry.followUpType = followUpType;
-    }
-
-    if (typeof isConnected === "boolean") {
-      enquiry.isConnected = isConnected;
-    }
-
-    if (typeof remarks === "string") {
-      enquiry.remarks = remarks;
-    }
-
-    await enquiry.save();
-
     return res.status(200).json({
       success: true,
-      message: "Enquiry updated successfully.",
+      message: "Follow-up saved.",
       enquiry,
     });
   } catch (error) {
@@ -206,7 +172,22 @@ export async function updateEnquiryFollowUp(req, res) {
 
     return res.status(500).json({
       success: false,
-      message: "Unable to update enquiry.",
+      message: "Unable to save follow-up.",
     });
   }
+}
+
+// Escape HTML to prevent user-submitted content from injecting HTML.
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, (char) => {
+    const entities = {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;",
+    };
+
+    return entities[char];
+  });
 }

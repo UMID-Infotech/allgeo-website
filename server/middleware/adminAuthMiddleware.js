@@ -1,21 +1,37 @@
 import jwt from "jsonwebtoken";
-import { findAdminById } from "../models/Admin.js";
+
+import Admin from "../models/Admin.js";
 
 const protectAdmin = async (req, res, next) => {
   try {
     const token = req.cookies.adminToken;
+
     if (!token) {
-      return res.status(401).json({ success: false, message: "Authentication required." });
+      return res.status(401).json({
+        success: false,
+        message: "Authentication required.",
+      });
     }
+
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const admin = await findAdminById(decoded.adminId);
+
+    const admin = await Admin.findById(decoded.adminId);
+
     if (!admin || !admin.isActive) {
-      return res.status(401).json({ success: false, message: "Admin account not available." });
+      return res.status(401).json({
+        success: false,
+        message: "Admin account not available.",
+      });
     }
+
     req.admin = admin;
+
     next();
-  } catch {
-    return res.status(401).json({ success: false, message: "Invalid or expired session." });
+  } catch (error) {
+    return res.status(401).json({
+      success: false,
+      message: "Invalid or expired session.",
+    });
   }
 };
 

@@ -1,36 +1,66 @@
-// Optional initial admin setup for a new, empty PostgreSQL database.
-// Existing admin records (including migrated password hashes) are never changed.
+// server/seed/seedAdmin.js
+//
+// Standalone script to seed the initial admin user.
+// This is NOT imported or run by server.js — run it manually, once,
+// before starting the server (see command below).
+//
+// Usage (from project root, where package.json lives):
+//   node server/seed/seedAdmin.js
+//
+// It safely no-ops if an admin with this email already exists.
+
 import "dotenv/config";
-import { randomUUID } from "node:crypto";
 import bcrypt from "bcryptjs";
-import { pool } from "../config/db.js";
+import mongoose from "mongoose";
 
-const name = process.env.ADMIN_NAME || "Admin";
-const email = process.env.ADMIN_EMAIL?.toLowerCase().trim();
-const password = process.env.ADMIN_PASSWORD;
+import connectDB from "../config/db.js";
+import Admin from "../models/Admin.js";
 
-try {
-  if (!email || !password) throw new Error("Set ADMIN_EMAIL and ADMIN_PASSWORD before seeding an admin");
-  const existing = await pool.query("SELECT id FROM admins WHERE email=$1", [email]);
-  if (existing.rowCount) {
-    console.log("Admin already exists; no changes made.");
-  } else {
-    const hash = await bcrypt.hash(password, 10);
-    await pool.query(
-      "INSERT INTO admins (id, name, email, password_hash) VALUES ($1,$2,$3,$4)",
-      [randomUUID(), name, email, hash],
-    );
-    console.log("Admin seeded successfully.");
+const ADMIN_NAME = "Admin";
+const ADMIN_EMAIL = "admin@allgeosolutions.com";
+const ADMIN_PASSWORD = "Allgeos@123";
+
+const seedAdmin = async () => {
+  try {
+    await connectDB();
+
+    const existingAdmin = await Admin.findOne({
+      email: ADMIN_EMAIL.toLowerCase().trim(),
+    });
+
+    if (existingAdmin) {
+      console.log(
+        `Admin with email "${ADMIN_EMAIL}" already exists. Skipping seed.`
+      );
+      await mongoose.disconnect();
+      process.exit(0);
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(ADMIN_PASSWORD, salt);
+
+    const admin = new Admin({
+      name: ADMIN_NAME,
+      email: ADMIN_EMAIL,
+      password: hashedPassword,
+      role: "admin",
+      isActive: true,
+    });
+
+    await admin.save();
+
+    console.log("Admin seeded successfully:");
+    console.log(`  Email: ${ADMIN_EMAIL}`);
+    console.log(`  Password: ${ADMIN_PASSWORD}`);
+    console.log("Please log in and change the password if needed.");
+
+    await mongoose.disconnect();
+    process.exit(0);
+  } catch (error) {
+    console.error("Error seeding admin:", error.message);
+    await mongoose.disconnect();
+    process.exit(1);
   }
-<<<<<<< HEAD
-} catch (error) {
-  console.error("Error seeding admin:", error.message);
-  process.exitCode = 1;
-} finally {
-  await pool.end();
-}
-=======
 };
 
 seedAdmin();
->>>>>>> 899b57d (allgeo-04 branch backup created)

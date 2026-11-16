@@ -1,134 +1,420 @@
-import { randomUUID } from "node:crypto";
-import {
-  listActiveServices, findServiceBySlug, createServiceRecord,
-  updateServiceRecord, deleteServiceRecord,
-} from "../models/Service.js";
-import {
-  listServiceFaqs, findServiceFaq, countServiceFaqs,
-  createServiceFaqRecord, updateServiceFaqRecord, deleteServiceFaqRecord,
-} from "../models/ServiceFaq.js";
+// server/controllers/serviceController.js
+import Service from "../models/Service.js";
+import ServiceFaq from "../models/ServiceFaq.js";
 
-const normalizeSlug = (value) => value.toLowerCase().trim();
-const failure = (res, message, error) => {
-  console.error(message, error);
-  return res.status(500).json({ success: false, message });
-};
-
+// GET /api/services
+// Public — list all active services, ordered for the ServicesSection grid.
 export const getAllServices = async (req, res) => {
   try {
-    const services = await listActiveServices();
-    return res.status(200).json({ success: true, count: services.length, services });
-  } catch (error) { return failure(res, "Unable to fetch services.", error); }
+    const services = await Service.find({ isActive: true }).sort({
+      order: 1,
+      createdAt: 1,
+    });
+
+    return res.status(200).json({
+      success: true,
+      count: services.length,
+      services,
+    });
+  } catch (error) {
+    console.error("Get all services error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Unable to fetch services.",
+    });
+  }
 };
 
+// GET /api/services/:slug
+// Public — single service with its accordion (FAQ) items, for ServiceDetailPage.
 export const getServiceBySlug = async (req, res) => {
   try {
-    const service = await findServiceBySlug(normalizeSlug(req.params.slug), true);
-    if (!service) return res.status(404).json({ success: false, message: "Service not found." });
-    const faqs = await listServiceFaqs(service._id);
-    return res.status(200).json({ success: true, service, faqs });
-  } catch (error) { return failure(res, "Unable to fetch service.", error); }
+    const { slug } = req.params;
+
+    const service = await Service.findOne({
+      slug: slug.toLowerCase().trim(),
+      isActive: true,
+    });
+
+    if (!service) {
+      return res.status(404).json({
+        success: false,
+        message: "Service not found.",
+      });
+    }
+
+    const faqs = await ServiceFaq.find({ service: service._id }).sort({
+      order: 1,
+      createdAt: 1,
+    });
+
+    return res.status(200).json({
+      success: true,
+      service,
+      faqs,
+    });
+  } catch (error) {
+    console.error("Get service by slug error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Unable to fetch service.",
+    });
+  }
 };
 
+// POST /api/services
+// Admin only — create a new service from the admin dashboard.
 export const createService = async (req, res) => {
   try {
-    const { slug, title, shortDescription, longDescription, image, order, isActive } = req.body;
+    const {
+      slug,
+      title,
+      shortDescription,
+      longDescription,
+      image,
+      order,
+      isActive,
+    } = req.body;
+
     if (!slug || !title || !shortDescription || !longDescription || !image) {
-      return res.status(400).json({ success: false, message: "slug, title, shortDescription, longDescription and image are required." });
+      return res.status(400).json({
+        success: false,
+        message:
+          "slug, title, shortDescription, longDescription and image are required.",
+      });
     }
-    const normalizedSlug = normalizeSlug(slug);
-    if (await findServiceBySlug(normalizedSlug)) {
-      return res.status(409).json({ success: false, message: `A service with slug "${normalizedSlug}" already exists.` });
+
+    const normalizedSlug = slug.toLowerCase().trim();
+
+    const existingService = await Service.findOne({ slug: normalizedSlug });
+
+    if (existingService) {
+      return res.status(409).json({
+        success: false,
+        message: `A service with slug "${normalizedSlug}" already exists.`,
+      });
     }
-    const service = await createServiceRecord({
-      _id: randomUUID(), slug: normalizedSlug, title, shortDescription, longDescription,
-      image, order: typeof order === "number" ? order : 0,
+
+    const service = await Service.create({
+      slug: normalizedSlug,
+      title,
+      shortDescription,
+      longDescription,
+      image,
+      order: typeof order === "number" ? order : 0,
       isActive: typeof isActive === "boolean" ? isActive : true,
     });
-    return res.status(201).json({ success: true, message: "Service created successfully.", service });
+
+    return res.status(201).json({
+      success: true,
+      message: "Service created successfully.",
+      service,
+    });
   } catch (error) {
-    if (error.code === "23505") return res.status(409).json({ success: false, message: "A service with this slug already exists." });
-    return failure(res, "Unable to create service.", error);
+    console.error("Create service error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Unable to create service.",
+    });
   }
 };
 
+// PUT /api/services/:slug
+// Admin only — edit an existing service's fields from the admin dashboard.
 export const updateService = async (req, res) => {
   try {
-    const { slug: newSlug, title, shortDescription, longDescription, image, order, isActive } = req.body;
+    const { slug } = req.params;
+    const {
+      slug: newSlug,
+      title,
+      shortDescription,
+      longDescription,
+      image,
+      order,
+      isActive,
+    } = req.body;
+
     if (!title || !shortDescription || !longDescription || !image) {
-      return res.status(400).json({ success: false, message: "title, shortDescription, longDescription and image are required." });
+      return res.status(400).json({
+        success: false,
+        message:
+          "title, shortDescription, longDescription and image are required.",
+      });
     }
-    const current = await findServiceBySlug(normalizeSlug(req.params.slug));
-    if (!current) return res.status(404).json({ success: false, message: "Service not found." });
-    const slug = newSlug ? normalizeSlug(newSlug) : current.slug;
-    const service = await updateServiceRecord(current._id, {
-      slug, title, shortDescription, longDescription, image,
-      order: typeof order === "number" ? order : current.order,
-      isActive: typeof isActive === "boolean" ? isActive : current.isActive,
+
+    const service = await Service.findOne({
+      slug: slug.toLowerCase().trim(),
     });
-    if (!service) return res.status(404).json({ success: false, message: "Service not found." });
-    return res.status(200).json({ success: true, message: "Service updated successfully.", service });
+
+    if (!service) {
+      return res.status(404).json({
+        success: false,
+        message: "Service not found.",
+      });
+    }
+
+    // Allow changing the slug, but make sure it doesn't collide with
+    // another service's slug.
+    if (newSlug) {
+      const normalizedNewSlug = newSlug.toLowerCase().trim();
+
+      if (normalizedNewSlug !== service.slug) {
+        const slugTaken = await Service.findOne({
+          slug: normalizedNewSlug,
+          _id: { $ne: service._id },
+        });
+
+        if (slugTaken) {
+          return res.status(409).json({
+            success: false,
+            message: `A service with slug "${normalizedNewSlug}" already exists.`,
+          });
+        }
+
+        // Keep FAQ items' denormalized serviceSlug in sync.
+        await ServiceFaq.updateMany(
+          { service: service._id },
+          { $set: { serviceSlug: normalizedNewSlug } }
+        );
+
+        service.slug = normalizedNewSlug;
+      }
+    }
+
+    service.title = title;
+    service.shortDescription = shortDescription;
+    service.longDescription = longDescription;
+    service.image = image;
+
+    if (typeof order === "number") {
+      service.order = order;
+    }
+
+    if (typeof isActive === "boolean") {
+      service.isActive = isActive;
+    }
+
+    await service.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Service updated successfully.",
+      service,
+    });
   } catch (error) {
-    if (error.code === "23505") return res.status(409).json({ success: false, message: "A service with this slug already exists." });
-    return failure(res, "Unable to update service.", error);
+    console.error("Update service error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Unable to update service.",
+    });
   }
 };
 
+// DELETE /api/services/:slug
+// Admin only — delete a service and its accordion (FAQ) items.
 export const deleteService = async (req, res) => {
   try {
-    const service = await findServiceBySlug(normalizeSlug(req.params.slug));
-    if (!service) return res.status(404).json({ success: false, message: "Service not found." });
-    await deleteServiceRecord(service._id);
-    return res.status(200).json({ success: true, message: "Service deleted successfully." });
-  } catch (error) { return failure(res, "Unable to delete service.", error); }
-};
+    const { slug } = req.params;
 
-export const addServiceFaq = async (req, res) => {
-  try {
-    const { faqId, title, description, images, order } = req.body;
-    if (!faqId || !title || !description) {
-      return res.status(400).json({ success: false, message: "faqId, title and description are required." });
-    }
-    const service = await findServiceBySlug(normalizeSlug(req.params.slug));
-    if (!service) return res.status(404).json({ success: false, message: "Service not found." });
-    if (await findServiceFaq(service._id, faqId)) {
-      return res.status(409).json({ success: false, message: `A FAQ item with faqId "${faqId}" already exists for this service.` });
-    }
-    const faq = await createServiceFaqRecord({
-      _id: randomUUID(), service: service._id, serviceSlug: service.slug,
-      faqId, title, description, images: Array.isArray(images) ? images : [],
-      order: typeof order === "number" ? order : await countServiceFaqs(service._id),
+    const service = await Service.findOne({
+      slug: slug.toLowerCase().trim(),
     });
-    return res.status(201).json({ success: true, message: "Service FAQ item added successfully.", faq });
+
+    if (!service) {
+      return res.status(404).json({
+        success: false,
+        message: "Service not found.",
+      });
+    }
+
+    await ServiceFaq.deleteMany({ service: service._id });
+    await service.deleteOne();
+
+    return res.status(200).json({
+      success: true,
+      message: "Service deleted successfully.",
+    });
   } catch (error) {
-    if (error.code === "23505") return res.status(409).json({ success: false, message: "A FAQ item with this ID already exists for this service." });
-    return failure(res, "Unable to add service FAQ item.", error);
+    console.error("Delete service error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Unable to delete service.",
+    });
   }
 };
 
-export const updateServiceFaq = async (req, res) => {
+// POST /api/services/:slug/faqs
+// Admin only — add an accordion / expertise item to an existing service.
+export const addServiceFaq = async (req, res) => {
   try {
-    const { title, description, images, order } = req.body;
-    if (!title || !description) return res.status(400).json({ success: false, message: "title and description are required." });
-    const service = await findServiceBySlug(normalizeSlug(req.params.slug));
-    if (!service) return res.status(404).json({ success: false, message: "Service not found." });
-    const current = await findServiceFaq(service._id, req.params.faqId);
-    if (!current) return res.status(404).json({ success: false, message: "FAQ item not found." });
-    const faq = await updateServiceFaqRecord(current._id, {
-      title, description, images: Array.isArray(images) ? images : [],
-      order: typeof order === "number" ? order : current.order,
+    const { slug } = req.params;
+    const { faqId, title, description, images, order } = req.body;
+
+    if (!faqId || !title || !description) {
+      return res.status(400).json({
+        success: false,
+        message: "faqId, title and description are required.",
+      });
+    }
+
+    const service = await Service.findOne({
+      slug: slug.toLowerCase().trim(),
     });
-    return res.status(200).json({ success: true, message: "Service FAQ item updated successfully.", faq });
-  } catch (error) { return failure(res, "Unable to update service FAQ item.", error); }
+
+    if (!service) {
+      return res.status(404).json({
+        success: false,
+        message: "Service not found.",
+      });
+    }
+
+    const existingFaq = await ServiceFaq.findOne({
+      service: service._id,
+      faqId,
+    });
+
+    if (existingFaq) {
+      return res.status(409).json({
+        success: false,
+        message: `A FAQ item with faqId "${faqId}" already exists for this service.`,
+      });
+    }
+
+    const faqCount = await ServiceFaq.countDocuments({
+      service: service._id,
+    });
+
+    const faq = await ServiceFaq.create({
+      service: service._id,
+      serviceSlug: service.slug,
+      faqId,
+      title,
+      description,
+      images: Array.isArray(images) ? images : [],
+      order: typeof order === "number" ? order : faqCount,
+    });
+
+    return res.status(201).json({
+      success: true,
+      message: "Service FAQ item added successfully.",
+      faq,
+    });
+  } catch (error) {
+    console.error("Add service FAQ error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Unable to add service FAQ item.",
+    });
+  }
 };
 
+// PUT /api/services/:slug/faqs/:faqId
+// Admin only — edit an existing accordion / expertise item.
+export const updateServiceFaq = async (req, res) => {
+  try {
+    const { slug, faqId } = req.params;
+    const { title, description, images, order } = req.body;
+
+    if (!title || !description) {
+      return res.status(400).json({
+        success: false,
+        message: "title and description are required.",
+      });
+    }
+
+    const service = await Service.findOne({
+      slug: slug.toLowerCase().trim(),
+    });
+
+    if (!service) {
+      return res.status(404).json({
+        success: false,
+        message: "Service not found.",
+      });
+    }
+
+    const faq = await ServiceFaq.findOne({
+      service: service._id,
+      faqId,
+    });
+
+    if (!faq) {
+      return res.status(404).json({
+        success: false,
+        message: "FAQ item not found.",
+      });
+    }
+
+    faq.title = title;
+    faq.description = description;
+    faq.images = Array.isArray(images) ? images : [];
+
+    if (typeof order === "number") {
+      faq.order = order;
+    }
+
+    await faq.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Service FAQ item updated successfully.",
+      faq,
+    });
+  } catch (error) {
+    console.error("Update service FAQ error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Unable to update service FAQ item.",
+    });
+  }
+};
+
+// DELETE /api/services/:slug/faqs/:faqId
+// Admin only — delete an accordion / expertise item.
 export const deleteServiceFaq = async (req, res) => {
   try {
-    const service = await findServiceBySlug(normalizeSlug(req.params.slug));
-    if (!service) return res.status(404).json({ success: false, message: "Service not found." });
-    const faq = await findServiceFaq(service._id, req.params.faqId);
-    if (!faq) return res.status(404).json({ success: false, message: "FAQ item not found." });
-    await deleteServiceFaqRecord(faq._id);
-    return res.status(200).json({ success: true, message: "Service FAQ item deleted successfully." });
-  } catch (error) { return failure(res, "Unable to delete service FAQ item.", error); }
+    const { slug, faqId } = req.params;
+
+    const service = await Service.findOne({
+      slug: slug.toLowerCase().trim(),
+    });
+
+    if (!service) {
+      return res.status(404).json({
+        success: false,
+        message: "Service not found.",
+      });
+    }
+
+    const faq = await ServiceFaq.findOneAndDelete({
+      service: service._id,
+      faqId,
+    });
+
+    if (!faq) {
+      return res.status(404).json({
+        success: false,
+        message: "FAQ item not found.",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Service FAQ item deleted successfully.",
+    });
+  } catch (error) {
+    console.error("Delete service FAQ error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Unable to delete service FAQ item.",
+    });
+  }
 };
