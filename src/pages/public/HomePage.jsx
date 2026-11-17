@@ -6,6 +6,7 @@ import ServicesSection from "../../components/home/ServicesSection";
 import AcrossIndia from "../../components/home/across-india";
 import ProductsSection from "../../components/home/ProductsSection";
 import WhyAllGeoSection from "../../components/home/WhyAllGeoSection";
+import BlogSection from "../../components/home/BlogSection";
 import CTASection from "../../components/home/CTASection";
 
 function HomePage() {
@@ -19,6 +20,7 @@ function HomePage() {
       <AcrossIndia />
       <ProductsSection />
       <WhyAllGeoSection />
+      <BlogSection />
       <CTASection />
     </main>
   );

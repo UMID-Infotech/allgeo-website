@@ -8,17 +8,11 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import pg from "pg";
+import { getPgConfig } from "../config/db.js";
 
 const exportDir = process.argv[2];
 if (!exportDir) {
   console.error("Usage: node server/migrations/importMongoExports.js <export-directory>");
-  process.exit(1);
-}
-
-const requiredEnv = ["PGHOST", "PGPORT", "PGDATABASE", "PGUSER", "PGPASSWORD"];
-const missingEnv = requiredEnv.filter((key) => !process.env[key]);
-if (missingEnv.length) {
-  console.error(`Missing environment settings: ${missingEnv.join(", ")}`);
   process.exit(1);
 }
 
@@ -62,14 +56,7 @@ const readCollection = async (name) => {
 
 const counts = { admins: 0, services: 0, serviceFaqs: 0 };
 let transactionStarted = false;
-const client = new pg.Client({
-  host: process.env.PGHOST,
-  port: Number(process.env.PGPORT),
-  database: process.env.PGDATABASE,
-  user: process.env.PGUSER,
-  password: process.env.PGPASSWORD,
-  connectionTimeoutMillis: 10000,
-});
+const client = new pg.Client(getPgConfig());
 
 try {
   // Read and validate all three files before opening a database transaction.

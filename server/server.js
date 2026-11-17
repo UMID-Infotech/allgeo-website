@@ -10,6 +10,8 @@ import express from "express";
 
 import connectDB from "./config/db.js";
 import adminAuthRoutes from "./routes/adminAuthRoutes.js";
+import blogCategoryRoutes from "./routes/blogCategoryRoutes.js";
+import blogRoutes from "./routes/blogRoutes.js";
 import clientRoutes from "./routes/clientRoutes.js";
 import enquiryRoutes from "./routes/enquiryRoutes.js";
 import serviceRoutes from "./routes/serviceRoutes.js";
@@ -30,7 +32,7 @@ if (process.env.NODE_ENV !== "production") {
   );
 }
 
-app.use(express.json());
+app.use(express.json({ limit: "2mb" }));
 app.use(cookieParser());
 
 app.get("/api/health", (req, res) => {
@@ -41,6 +43,8 @@ app.get("/api/health", (req, res) => {
 });
 
 app.use("/api/admin/auth", adminAuthRoutes);
+app.use("/api/blogs", blogRoutes);
+app.use("/api/blog-categories", blogCategoryRoutes);
 app.use("/api/clients", clientRoutes);
 app.use("/api/enquiries", enquiryRoutes);
 app.use("/api/services", serviceRoutes);

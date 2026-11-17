@@ -1,4 +1,6 @@
 import {
+  FileText,
+  FolderTree,
   LayoutDashboard,
   Mail,
   Package,
@@ -27,6 +29,16 @@ const menuItems = [
     title: "Clients",
     path: "/admin/clients",
     icon: Users,
+  },
+  {
+    title: "Blogs",
+    path: "/admin/blogs",
+    icon: FileText,
+  },
+  {
+    title: "Categories",
+    path: "/admin/categories",
+    icon: FolderTree,
   },
   {
     title: "Products",
