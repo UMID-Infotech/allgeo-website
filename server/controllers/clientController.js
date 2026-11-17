@@ -1,15 +1,17 @@
 // server/controllers/clientController.js
-import Client from "../models/Client.js";
+import {
+  createClientRecord,
+  findActiveClients,
+  findAllClients,
+  getNextClientOrder,
+} from "../models/Client.js";
 import { getImageKitAuthParams } from "../config/imagekit.js";
 
 // GET /api/clients
 // Public — active clients only, for the ClientsSection slider on the website.
 export const getAllClients = async (req, res) => {
   try {
-    const clients = await Client.find({ isActive: true }).sort({
-      order: 1,
-      createdAt: 1,
-    });
+    const clients = await findActiveClients();
 
     return res.status(200).json({
       success: true,
@@ -31,10 +33,7 @@ export const getAllClients = async (req, res) => {
 // dashboard listing/management view.
 export const getAllClientsForAdmin = async (req, res) => {
   try {
-    const clients = await Client.find({}).sort({
-      order: 1,
-      createdAt: 1,
-    });
+    const clients = await findAllClients();
 
     return res.status(200).json({
       success: true,
@@ -77,9 +76,14 @@ export const getClientImageKitAuth = async (req, res) => {
 // Admin only — add a new client from the admin dashboard "Add Client" form.
 export const createClient = async (req, res) => {
   try {
-    const { name, logo, order, isActive } = req.body;
+    const { name, logo, order, isActive } = req.body ?? {};
 
-    if (!name || !logo) {
+    if (
+      typeof name !== "string" ||
+      typeof logo !== "string" ||
+      !name.trim() ||
+      !logo.trim()
+    ) {
       return res.status(400).json({
         success: false,
         message: "name and logo are required.",
@@ -88,14 +92,11 @@ export const createClient = async (req, res) => {
 
     // Default new clients to the end of the list unless an explicit
     // order value is provided.
-    let resolvedOrder = order;
+    const resolvedOrder = Number.isInteger(order)
+      ? order
+      : await getNextClientOrder();
 
-    if (typeof resolvedOrder !== "number") {
-      const lastClient = await Client.findOne({}).sort({ order: -1 });
-      resolvedOrder = lastClient ? lastClient.order + 1 : 0;
-    }
-
-    const client = await Client.create({
+    const client = await createClientRecord({
       name: name.trim(),
       logo: logo.trim(),
       order: resolvedOrder,
@@ -108,6 +109,14 @@ export const createClient = async (req, res) => {
       client,
     });
   } catch (error) {
+    // 23505 = PostgreSQL unique_violation (client name already exists)
+    if (error.code === "23505") {
+      return res.status(409).json({
+        success: false,
+        message: "A client with this name already exists.",
+      });
+    }
+
     console.error("Create client error:", error);
 
     return res.status(500).json({

@@ -22,15 +22,9 @@ try {
     );
     console.log("Admin seeded successfully.");
   }
-<<<<<<< HEAD
 } catch (error) {
   console.error("Error seeding admin:", error.message);
   process.exitCode = 1;
 } finally {
   await pool.end();
 }
-=======
-};
-
-seedAdmin();
->>>>>>> 899b57d (allgeo-04 branch backup created)

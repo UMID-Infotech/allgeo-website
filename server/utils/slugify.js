@@ -1,0 +1,10 @@
+// server/utils/slugify.js
+export function slugify(text = "") {
+  return String(text)
+    .toLowerCase()
+    .trim()
+    .replace(/&/g, " and ")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 120);
+}
