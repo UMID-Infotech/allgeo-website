@@ -102,3 +102,23 @@ CREATE TABLE IF NOT EXISTS blog_category_map (
 
 CREATE INDEX IF NOT EXISTS blog_category_map_category_idx
   ON blog_category_map (category_id);
+
+
+
+-- =========================================================
+-- Projects
+-- =========================================================
+
+CREATE TABLE IF NOT EXISTS projects (
+  id TEXT PRIMARY KEY,
+  title TEXT NOT NULL,
+  slug TEXT NOT NULL UNIQUE,
+  excerpt TEXT NOT NULL DEFAULT '',
+  content TEXT NOT NULL,
+  cover_image TEXT NOT NULL,
+  is_published BOOLEAN NOT NULL DEFAULT TRUE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS projects_created_at_idx ON projects (created_at DESC);

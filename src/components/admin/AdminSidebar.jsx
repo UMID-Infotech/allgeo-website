@@ -1,9 +1,9 @@
 import {
+  Briefcase,
   FileText,
   FolderTree,
   LayoutDashboard,
   Mail,
-  Package,
   Settings,
   Users,
 } from "lucide-react";
@@ -41,9 +41,9 @@ const menuItems = [
     icon: FolderTree,
   },
   {
-    title: "Products",
-    path: "/admin/products",
-    icon: Package,
+    title: "Projects",
+    path: "/admin/projects",
+    icon: Briefcase,
   },
 ];
 
