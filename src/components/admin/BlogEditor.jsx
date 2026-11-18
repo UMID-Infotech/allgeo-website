@@ -3,6 +3,8 @@
 // CKEditor 5 (free, open-source GPL build) rich-text editor.
 // Images pasted / dragged / inserted with the toolbar image button are
 // uploaded to ImageKit and the ImageKit URL is stored in the content.
+import { useMemo } from "react";
+
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import {
   Alignment,
@@ -41,8 +43,9 @@ import { uploadImageToImageKit } from "@/lib/imagekitUpload";
 
 // Tells CKEditor how to upload an image: send it to ImageKit.
 class ImageKitUploadAdapter {
-  constructor(loader) {
+  constructor(loader, folder) {
     this.loader = loader;
+    this.folder = folder;
     this.controller = null;
   }
 
@@ -51,7 +54,7 @@ class ImageKitUploadAdapter {
     this.controller = new AbortController();
 
     const url = await uploadImageToImageKit(file, {
-      folder: "/allgeo-solutions/blogs/content",
+      folder: this.folder,
       abortSignal: this.controller.signal,
       onProgress: (percent) => {
         this.loader.uploadTotal = 100;
@@ -67,12 +70,15 @@ class ImageKitUploadAdapter {
   }
 }
 
-function ImageKitUploadPlugin(editor) {
-  editor.plugins.get("FileRepository").createUploadAdapter = (loader) =>
-    new ImageKitUploadAdapter(loader);
+// Builds the CKEditor plugin that uploads images into the given ImageKit folder.
+function createImageKitUploadPlugin(folder) {
+  return function ImageKitUploadPlugin(editor) {
+    editor.plugins.get("FileRepository").createUploadAdapter = (loader) =>
+      new ImageKitUploadAdapter(loader, folder);
+  };
 }
 
-const editorConfig = {
+const baseEditorConfig = {
   licenseKey: "GPL",
   plugins: [
     Essentials,
@@ -102,7 +108,6 @@ const editorConfig = {
     PasteFromOffice,
     Undo,
   ],
-  extraPlugins: [ImageKitUploadPlugin],
   toolbar: {
     items: [
       "undo",
@@ -158,15 +163,29 @@ const editorConfig = {
   table: {
     contentToolbar: ["tableColumn", "tableRow", "mergeTableCells"],
   },
-  placeholder: "Write your blog content here...",
 };
 
-function BlogEditor({ initialValue = "", onChange, disabled = false }) {
+function BlogEditor({
+  initialValue = "",
+  onChange,
+  disabled = false,
+  uploadFolder = "/allgeo-solutions/blogs/content",
+  placeholder = "Write your content here...",
+}) {
+  const config = useMemo(
+    () => ({
+      ...baseEditorConfig,
+      extraPlugins: [createImageKitUploadPlugin(uploadFolder)],
+      placeholder,
+    }),
+    [uploadFolder, placeholder],
+  );
+
   return (
     <div className="blog-editor">
       <CKEditor
         editor={ClassicEditor}
-        config={editorConfig}
+        config={config}
         data={initialValue}
         disabled={disabled}
         onChange={(_event, editor) => onChange?.(editor.getData())}

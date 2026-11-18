@@ -23,8 +23,12 @@ import AdminBlogs from "@/pages/admin/AdminBlogs";
 import AdminBlogAdd from "@/pages/admin/AdminBlogAdd";
 import AdminCategories from "@/pages/admin/AdminCategories";
 import AdminCategoryForm from "@/pages/admin/AdminCategoryForm";
+import AdminProjects from "@/pages/admin/AdminProjects";
+import AdminProjectAdd from "@/pages/admin/AdminProjectAdd";
 import BlogListPage from "@/pages/public/BlogListPage";
 import BlogDetailPage from "@/pages/public/BlogDetailPage";
+import ProjectListPage from "@/pages/public/ProjectListPage";
+import ProjectDetailPage from "@/pages/public/ProjectDetailPage";
 
 function AppRoutes() {
   return (
@@ -65,6 +69,8 @@ function AppRoutes() {
         <Route path="categories" element={<AdminCategories />} />
         <Route path="categories/add" element={<AdminCategoryForm />} />
         <Route path="categories/edit/:id" element={<AdminCategoryForm />} />
+        <Route path="projects" element={<AdminProjects />} />
+        <Route path="projects/add" element={<AdminProjectAdd />} />
         <Route path="enquiries" element={<AdminEnquiries />} />
         </Route>
       </Route>
@@ -102,12 +108,17 @@ function AppRoutes() {
           element={<BlogDetailPage />}
         />
 
-        {/* Future Routes
-
         <Route
           path="/projects"
-          element={<ComingSoonPage />}
+          element={<ProjectListPage />}
         />
+
+        <Route
+          path="/projects/:slug"
+          element={<ProjectDetailPage />}
+        />
+
+        {/* Future Routes
 
         <Route
           path="/gallery"

@@ -12,6 +12,7 @@ import connectDB from "./config/db.js";
 import adminAuthRoutes from "./routes/adminAuthRoutes.js";
 import blogCategoryRoutes from "./routes/blogCategoryRoutes.js";
 import blogRoutes from "./routes/blogRoutes.js";
+import projectRoutes from "./routes/projectRoutes.js";
 import clientRoutes from "./routes/clientRoutes.js";
 import enquiryRoutes from "./routes/enquiryRoutes.js";
 import serviceRoutes from "./routes/serviceRoutes.js";
@@ -45,6 +46,7 @@ app.get("/api/health", (req, res) => {
 app.use("/api/admin/auth", adminAuthRoutes);
 app.use("/api/blogs", blogRoutes);
 app.use("/api/blog-categories", blogCategoryRoutes);
+app.use("/api/projects", projectRoutes);
 app.use("/api/clients", clientRoutes);
 app.use("/api/enquiries", enquiryRoutes);
 app.use("/api/services", serviceRoutes);
