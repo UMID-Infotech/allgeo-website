@@ -29,6 +29,10 @@ export const mainNavigation = [
       },
     ],
   },
+    {
+    label: "Products",
+    path: "/product",
+  },
   {
     label: "Projects",
     path: "/projects",
